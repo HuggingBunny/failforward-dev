@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chad Longanecker — Security Automation Engineer</title>
+<meta name="description" content="Senior Security Automation Engineer. 15 years securing enterprise environments. Available for new roles." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  /* ── reset ─────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #0a0a0a;
+    color: #e6e6e6;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.55;
+    font-size: 15px;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #3b82f6; color: #0a0a0a; }
+
+  /* ── tokens ────────────────────────────────────────── */
+  :root {
+    --bg: #0a0a0a;
+    --bg-1: #111;
+    --line: #1f1f1f;
+    --line-2: #2a2a2a;
+    --ink: #ededed;
+    --ink-2: #b8b8b8;
+    --mute: #6b6b6b;
+    --mute-2: #4a4a4a;
+    --accent: #3b82f6;
+    --accent-dim: #1e3a8a;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+
+  /* ── layout ────────────────────────────────────────── */
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ── top bar ───────────────────────────────────────── */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--mute);
+    padding: 14px 0;
+  }
+  .topbar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .topbar .left { display: flex; gap: 16px; align-items: center; }
+  .topbar .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px rgba(59,130,246,.6); display: inline-block; }
+  .topbar .right { display: flex; gap: 18px; }
+  .topbar a:hover { color: var(--ink); }
+
+  /* ── section frame ─────────────────────────────────── */
+  section { border-bottom: 1px solid var(--line); }
+  .marker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--mute);
+    text-transform: uppercase;
+    padding: 28px 0 0 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .marker .rule { flex: 1; height: 1px; background: var(--line); }
+  .marker .idx { color: var(--accent); }
+
+  /* ── hero ──────────────────────────────────────────── */
+  .hero { padding: 80px 0 96px; position: relative; }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: 0 0;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+    pointer-events: none;
+  }
+  .hero > * { position: relative; }
+
+  .meta-row {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--mute);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 44px;
+    letter-spacing: 0.02em;
+  }
+  .meta-row span b { color: var(--ink-2); font-weight: 500; }
+
+  h1.name {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: clamp(34px, 5.4vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+  .role {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    margin: 0 0 36px;
+  }
+  .role::before { content: "// "; color: var(--mute-2); }
+
+  .tagline {
+    font-family: var(--sans);
+    font-size: clamp(18px, 2.1vw, 22px);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 640px;
+    margin: 0 0 40px;
+    text-wrap: pretty;
+  }
+  .tagline em {
+    font-style: normal;
+    color: var(--ink);
+    background: linear-gradient(transparent 62%, rgba(59,130,246,0.18) 62%);
+    padding: 0 2px;
+  }
+
+  .status {
+    font-family: var(--mono);
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 2px;
+    background: rgba(59,130,246,0.04);
+    color: var(--ink-2);
+    margin-bottom: 44px;
+  }
+  .status .pulse {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(59,130,246,0.5);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(59,130,246,0.55); }
+    70% { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
+    100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+  }
+  .status[data-empty="true"] { display: none; }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 12px 20px;
+    border: 1px solid var(--line-2);
+    border-radius: 2px;
+    color: var(--ink);
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn .arrow { color: var(--mute); transition: color 0.15s; }
+  .btn:hover .arrow { color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #0a0a0a; }
+  .btn.primary .arrow { color: rgba(10,10,10,0.6); }
+  .btn.primary:hover { background: #2563eb; border-color: #2563eb; color: #0a0a0a; }
+  .btn.primary:hover .arrow { color: rgba(10,10,10,0.7); }
+
+  /* ── proof ─────────────────────────────────────────── */
+  .proof { padding: 48px 0 60px; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 28px;
+  }
+  .stat { padding: 8px 0; border-left: 1px solid var(--line); padding-left: 24px; }
+  .stat:first-child { border-left: 0; padding-left: 0; }
+  .stat .num {
+    font-family: var(--mono);
+    font-size: clamp(36px, 4.8vw, 52px);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .stat .num .plus { color: var(--accent); }
+  .stat .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 14px;
+  }
+  .stat .sub {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-top: 8px;
+    line-height: 1.45;
+    max-width: 220px;
+  }
+
+  /* ── building / projects ───────────────────────────── */
+  .building { padding: 48px 0 80px; }
+  .project-list { margin-top: 32px; display: flex; flex-direction: column; }
+  .project {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 28px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+    align-items: baseline;
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .project:last-child { border-bottom: 1px solid var(--line); }
+  .project::after {
+    content: "";
+    position: absolute;
+    left: -16px; right: -16px; top: 0; bottom: 0;
+    border-radius: 4px;
+    background: transparent;
+    z-index: -1;
+    transition: background 0.15s;
+  }
+  .project:hover::after { background: rgba(255,255,255,0.015); }
+  .project:hover .p-arrow { color: var(--accent); transform: translateX(3px); }
+  .project:hover .p-title { color: var(--accent); }
+
+  .p-idx {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--mute);
+  }
+  .p-body { min-width: 0; }
+  .p-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 8px; }
+  .p-title {
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+    transition: color 0.15s;
+  }
+  .p-tags {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+  }
+  .p-tags span + span::before { content: " · "; color: var(--mute-2); }
+  .p-desc {
+    font-family: var(--sans);
+    color: var(--ink-2);
+    font-size: 14.5px;
+    line-height: 1.55;
+    max-width: 620px;
+    margin-bottom: 10px;
+    text-wrap: pretty;
+  }
+  .p-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--mute);
+  }
+  .p-link::before { content: "↗ "; color: var(--accent); }
+  .p-arrow {
+    font-family: var(--mono);
+    color: var(--mute);
+    font-size: 18px;
+    transition: transform 0.15s, color 0.15s;
+    align-self: center;
+  }
+
+  /* ── contact ───────────────────────────────────────── */
+  .contact { padding: 48px 0 80px; }
+  .contact-grid {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    row-gap: 18px;
+    column-gap: 24px;
+    font-family: var(--mono);
+    font-size: 15px;
+  }
+  .contact-grid dt {
+    color: var(--mute);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-top: 4px;
+  }
+  .contact-grid dd { margin: 0; }
+  .contact-grid a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--line-2);
+    transition: border-color 0.15s, color 0.15s;
+    padding-bottom: 1px;
+  }
+  .contact-grid a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── footer ────────────────────────────────────────── */
+  footer { padding: 32px 0 56px; font-family: var(--mono); font-size: 12px; color: var(--mute); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  footer .com::before { content: "// "; color: var(--mute-2); }
+
+  /* ── tweaks panel ──────────────────────────────────── */
+  .tweaks {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 280px;
+    background: #0d0d0d;
+    border: 1px solid var(--line-2);
+    border-radius: 4px;
+    padding: 14px 16px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-2);
+    z-index: 99;
+    display: none;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  }
+  .tweaks.active { display: block; }
+  .tweaks-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .tweaks-title { color: var(--mute); text-transform: uppercase; letter-spacing: 0.1em; font-size: 10px; }
+  .tweaks-close { color: var(--mute); cursor: pointer; background: transparent; border: 0; padding: 0; font-family: inherit; }
+  .tweaks-close:hover { color: var(--ink); }
+  .tweaks-section { margin-top: 4px; }
+  .tweaks-label { font-size: 11px; color: var(--mute); margin-bottom: 8px; }
+  .tweaks-options { display: flex; flex-direction: column; gap: 4px; }
+  .tweak-opt {
+    text-align: left;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    color: var(--ink-2);
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    line-height: 1.35;
+  }
+  .tweak-opt:hover { border-color: var(--mute-2); color: var(--ink); }
+  .tweak-opt.active { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.06); }
+
+  /* ── responsive ────────────────────────────────────── */
+  @media (max-width: 720px) {
+    body { font-size: 14.5px; }
+    .wrap { padding: 0 22px; }
+    .hero { padding: 56px 0 72px; }
+    .meta-row { gap: 14px; }
+    .stats { grid-template-columns: 1fr; gap: 24px; }
+    .stat { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 20px; }
+    .stat:first-child { border-top: 0; padding-top: 0; }
+    .project { grid-template-columns: 1fr; gap: 4px; }
+    .p-idx { color: var(--accent); font-size: 11px; margin-bottom: 4px; }
+    .p-arrow { display: none; }
+    .contact-grid { grid-template-columns: 1fr; gap: 4px; }
+    .contact-grid dt { padding-top: 12px; }
+    .contact-grid dt:first-of-type { padding-top: 0; }
+    .tweaks { left: 12px; right: 12px; width: auto; bottom: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── top bar ─────────────────────────────────────────── -->
+<header class="topbar">
+  <div class="wrap">
+    <div class="left">
+      <span class="dot"></span>
+      <span>chad@failforward:~</span>
+      <span style="color:var(--mute-2)">·</span>
+      <span>krakow, pl</span>
+    </div>
+    <div class="right">
+      <a href="#building">building</a>
+      <a href="#contact">contact</a>
+      <a href="https://github.com/HuggingBunny" target="_blank" rel="noopener">github ↗</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── hero ────────────────────────────────────────────── -->
+<section class="hero" data-screen-label="hero">
+  <div class="wrap">
+    <div class="meta-row">
+      <span><b>build</b> v2026.05</span>
+      <span><b>tz</b> Europe/Warsaw · UTC+2</span>
+      <span><b>uptime</b> 15y</span>
+      <span><b>last_role</b> Motorola Solutions</span>
+    </div>
+
+    <h1 class="name">Chad Longanecker</h1>
+    <p class="role">Security Automation Engineer</p>
+
+    <p class="tagline">
+      I spent <em>15 years</em> automating enterprise security at scale.
+      Like many, caught right at the moment redundancy struck with acquisitions and a reorg.
+      Here's what I've been working on since.
+    </p>
+
+    <div class="status" id="status-line" data-comment-anchor="status">
+      <span class="pulse"></span>
+      <span id="status-text">Available July / Aug 2026 — open to roles globally · open to discussion</span>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn primary" href="/cdn-cgi/l/email-protection#97f4fff6f3d7f1f6fefbf1f8e5e0f6e5f3b9f3f2e1a8e4e2f5fdf2f4e3aac5f8fbf2b2a5a7f3fee4f4e2e4e4fef8f9">
+        <span>get in touch</span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="btn" href="https://github.com/HuggingBunny" target="_blank" rel="noopener">
+        <span>view github</span>
+        <span class="arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── proof ───────────────────────────────────────────── -->
+<section class="proof" data-screen-label="proof">
+  <div class="wrap">
+    <div class="marker">
+      <span class="idx">01</span>
+      <span>proof</span>
+      <span class="rule"></span>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num">250<span class="plus">+</span></div>
+        <div class="label">environments</div>
+        <div class="sub">secured across enterprise rollouts &amp; M&amp;A integrations</div>
+      </div>
+      <div class="stat">
+        <div class="num">33</div>
+        <div class="label">countries</div>
+        <div class="sub">DLP, incident response, and tooling at global scale</div>
+      </div>
+      <div class="stat">
+        <div class="num">15</div>
+        <div class="label">years</div>
+        <div class="sub">in enterprise security &mdash; Much of it at Motorola Solutions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── building ────────────────────────────────────────── -->
+<section class="building" id="building" data-screen-label="building">
+  <div class="wrap">
+    <div class="marker">
+      <span class="idx">02</span>
+      <span>building</span>
+      <span class="rule"></span>
+    </div>
+
+    <div class="project-list">
+
+      <a class="project" href="https://github.com/HuggingBunny/gemini-web-agent" target="_blank" rel="noopener">
+        <div class="p-idx">[01]</div>
+        <div class="p-body">
+          <div class="p-head">
+            <span class="p-title">gemini-web-agent</span>
+            <span class="p-tags"><span>python</span><span>llm</span><span>automation</span></span>
+          </div>
+          <p class="p-desc">Autonomous browser agent driven by Google&rsquo;s Gemini multimodal API. Plans, navigates and extracts from arbitrary web pages without a brittle DOM scraper underneath.</p>
+          <div class="p-link">github.com/HuggingBunny/gemini-web-agent</div>
+        </div>
+        <div class="p-arrow">→</div>
+      </a>
+
+      <a class="project" href="https://github.com/HuggingBunny/BitBucket-Migration-Tool" target="_blank" rel="noopener">
+        <div class="p-idx">[02]</div>
+        <div class="p-body">
+          <div class="p-head">
+            <span class="p-title">BitBucket-Migration-Tool</span>
+            <span class="p-tags"><span>python</span><span>devops</span><span>git</span></span>
+          </div>
+          <p class="p-desc">Bulk-migrates BitBucket repositories to GitHub while preserving full history, branches, tags and pull-request metadata. Built for cross-org transitions at scale.</p>
+          <div class="p-link">github.com/HuggingBunny/BitBucket-Migration-Tool</div>
+        </div>
+        <div class="p-arrow">→</div>
+      </a>
+
+      <a class="project" href="https://github.com/HuggingBunny/Productivity-Monitor" target="_blank" rel="noopener">
+        <div class="p-idx">[03]</div>
+        <div class="p-body">
+          <div class="p-head">
+            <span class="p-title">Productivity-Monitor</span>
+            <span class="p-tags"><span>python</span><span>local-first</span></span>
+          </div>
+          <p class="p-desc">Lightweight desktop tracker that logs active windows, idle time and focus blocks &mdash; entirely local, nothing phones home. Built to keep my own days honest during the job search.</p>
+          <div class="p-link">github.com/HuggingBunny/Productivity-Monitor</div>
+        </div>
+        <div class="p-arrow">→</div>
+      </a>
+
+      <a class="project" href="https://github.com/HuggingBunny/failforward.dev" target="_blank" rel="noopener">
+        <div class="p-idx">[04]</div>
+        <div class="p-body">
+          <div class="p-head">
+            <span class="p-title">failforward.dev</span>
+            <span class="p-tags"><span>html</span><span>css</span><span>this site</span></span>
+          </div>
+          <p class="p-desc">This page. Built in the open as a working document of what I&rsquo;m exploring next &mdash; not a polished CV hiding the gap.</p>
+          <div class="p-link">github.com/HuggingBunny/failforward.dev</div>
+        </div>
+        <div class="p-arrow">→</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── contact ─────────────────────────────────────────── -->
+<section class="contact" id="contact" data-screen-label="contact">
+  <div class="wrap">
+    <div class="marker">
+      <span class="idx">03</span>
+      <span>contact</span>
+      <span class="rule"></span>
+    </div>
+
+    <dl class="contact-grid">
+      <dt>email</dt>
+      <dd><a href="/cdn-cgi/l/email-protection#fd9e959c99bd9b9c94919b928f8a9c8f99d399988b"><span class="__cf_email__" data-cfemail="a5c6cdc4c1e5c3c4ccc9c3cad7d2c4d7c18bc1c0d3">[email&#160;protected]</span></a></dd>
+
+      <dt>linkedin</dt>
+      <dd><a href="https://www.linkedin.com/in/chadcybersec/" target="_blank" rel="noopener">linkedin.com/in/chadcybersec</a></dd>
+
+      <dt>github</dt>
+      <dd><a href="https://github.com/HuggingBunny" target="_blank" rel="noopener">github.com/HuggingBunny</a></dd>
+
+      <dt>status</dt>
+      <dd>Full EU work eligibility &middot; no sponsorship required &middot; immediately available &middot; based in Kraków, Poland</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- ── footer ──────────────────────────────────────────── -->
+<footer>
+  <div class="wrap">
+    <span class="com">built in the open · failforward.dev · 2026</span>
+    <span>v2026.05.001</span>
+  </div>
+</footer>
+
+<!-- ── tweaks panel ────────────────────────────────────── -->
+<div class="tweaks" id="tweaks" aria-hidden="true">
+  <div class="tweaks-head">
+    <span class="tweaks-title">Tweaks</span>
+    <button class="tweaks-close" id="tweaks-close" aria-label="close">×</button>
+  </div>
+  <div class="tweaks-section">
+    <div class="tweaks-label">Layoff acknowledgment</div>
+    <div class="tweaks-options" id="status-opts">
+      <button class="tweak-opt active" data-v="explicit">Available July / Aug 2026 — open to roles globally · open to discussion</button>
+      <button class="tweak-opt" data-v="subtle">Currently exploring new roles</button>
+      <button class="tweak-opt" data-v="punchy">Recently redundant. Not slowing down.</button>
+      <button class="tweak-opt" data-v="hidden">— hidden —</button>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function () {
+  // ── tweaks: layoff status variants ──────────────────────
+  var variants = {
+    explicit: 'Available July / Aug 2026 — open to roles globally · open to discussion',
+    subtle:   'Currently exploring new roles',
+    punchy:   'Recently redundant. Not slowing down.',
+    hidden:   ''
+  };
+
+  var statusEl = document.getElementById('status-line');
+  var statusText = document.getElementById('status-text');
+  var opts = document.querySelectorAll('#status-opts .tweak-opt');
+
+  function setVariant(v) {
+    var text = variants[v] != null ? variants[v] : variants.explicit;
+    if (text) {
+      statusEl.removeAttribute('data-empty');
+      statusText.textContent = text;
+    } else {
+      statusEl.setAttribute('data-empty', 'true');
+    }
+    opts.forEach(function (b) { b.classList.toggle('active', b.dataset.v === v); });
+    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { statusVariant: v } }, '*'); } catch (e) {}
+  }
+
+  opts.forEach(function (b) {
+    b.addEventListener('click', function () { setVariant(b.dataset.v); });
+  });
+
+  // ── tweaks: host protocol ───────────────────────────────
+  var panel = document.getElementById('tweaks');
+  var closeBtn = document.getElementById('tweaks-close');
+
+  window.addEventListener('message', function (e) {
+    var t = e.data && e.data.type;
+    if (t === '__activate_edit_mode') panel.classList.add('active');
+    else if (t === '__deactivate_edit_mode') panel.classList.remove('active');
+  });
+
+  closeBtn.addEventListener('click', function () {
+    panel.classList.remove('active');
+    try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch (e) {}
+  });
+
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch (e) {}
+
+  // ── initialise from persisted defaults ──────────────────
+  var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "statusVariant": "punchy"
+  }/*EDITMODE-END*/;
+  setVariant(TWEAK_DEFAULTS.statusVariant);
+})();
+</script>
+
+</body>
+</html>
