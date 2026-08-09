@@ -1,0 +1,85 @@
+---
+import '../styles/global.css';
+import TelemetryFooter from '../components/TelemetryFooter.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'failforward.dev · engineering resilience, in public',
+  description = 'Senior security automation engineering: post-mortems, automated systems, and AI risk governance. Failure, documented and weaponized.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="failforward.dev" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://failforward.dev/og.png" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, 'https://failforward.dev').href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Set theme before paint to avoid flash -->
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('ff-theme');
+          var theme =
+            stored ||
+            (window.matchMedia('(prefers-color-scheme: light)').matches
+              ? 'light'
+              : 'dark');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <nav class="nav">
+      <a class="brand" href="/">fail<span>forward</span>.dev</a>
+      <div class="nav-controls">
+        <ul>
+          <li><a href="/incidents/">incidents</a></li>
+          <li><a href="/projects/">projects</a></li>
+          <li><a href="/writing">writing</a></li>
+          <li><a href="/#labels">ai-labels</a></li>
+          <li><a href="/hire">hire</a></li>
+        </ul>
+        <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <span id="theme-icon">◐</span>
+        </button>
+      </div>
+    </nav>
+    <main>
+      <slot />
+    </main>
+    <TelemetryFooter />
+
+    <script is:inline>
+      var btn = document.getElementById('theme-toggle');
+      var icon = document.getElementById('theme-icon');
+      function syncIcon() {
+        var cur = document.documentElement.getAttribute('data-theme');
+        if (icon) icon.textContent = cur === 'light' ? '☀' : '☾';
+      }
+      syncIcon();
+      if (btn) {
+        btn.addEventListener('click', function () {
+          var cur = document.documentElement.getAttribute('data-theme');
+          var next = cur === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          try { localStorage.setItem('ff-theme', next); } catch (e) {}
+          syncIcon();
+        });
+      }
+    </script>
+  </body>
+</html>

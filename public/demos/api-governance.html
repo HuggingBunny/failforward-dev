@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Governance Dashboard · demo · failforward.dev</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --teal: #007A87; --teal-bg: #E6F4F5;
+    --ink: #1A1A1A; --mid: #525252; --dim: #737373; --faint: #A3A3A3;
+    --line: #E5E5E5; --panel: #F5F5F5; --page: #EDEFF1;
+    --red: #DC2626; --red-bg: #FEF2F2; --amber: #D97706; --amber-bg: #FFFBEB;
+    --green: #0A7D33; --green-bg: #F0FDF4;
+    --mono: 'JetBrains Mono', monospace; --sans: 'Inter', sans-serif;
+  }
+  body { margin: 0; background: var(--page); font-family: var(--sans); color: var(--ink); font-size: 14px; }
+  .site-bar { background: #0a1017; padding: 10px 24px; font-family: var(--mono); font-size: 13px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .site-bar a { color: #6fb3d8; text-decoration: none; }
+  .site-bar span { color: #647c92; }
+
+  .app { max-width: 1180px; margin: 24px auto 48px; padding: 0 16px; }
+  .app-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+  .app-title { font-size: 20px; font-weight: 700; }
+  .app-title small { font-family: var(--mono); font-weight: 400; color: var(--dim); font-size: 12px; margin-left: 10px; }
+  .tabs { display: flex; gap: 4px; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 4px; }
+  .tab { border: none; background: transparent; padding: 8px 16px; font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--mid); border-radius: 6px; cursor: pointer; }
+  .tab.active { background: var(--teal); color: #fff; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+
+  /* registry */
+  .toolbar { display: flex; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--line); flex-wrap: wrap; align-items: center; }
+  .search { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 0 12px; height: 34px; flex: 1; min-width: 200px; }
+  .search input { border: none; background: transparent; outline: none; font-family: var(--sans); font-size: 13px; width: 100%; }
+  .toolbar select { height: 34px; padding: 0 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; font-size: 13px; color: var(--mid); font-family: var(--sans); }
+  .count { font-family: var(--mono); font-size: 12px; color: var(--dim); margin-left: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); font-weight: 600; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+  td { padding: 12px 16px; border-bottom: 1px solid #F0F0F0; vertical-align: middle; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: var(--teal-bg); }
+  .api-name { font-family: var(--mono); font-size: 13px; font-weight: 600; }
+  .api-desc { font-size: 12px; color: var(--dim); margin-top: 2px; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+  .pill.active { background: var(--teal-bg); color: var(--teal); }
+  .pill.deprecated { background: var(--amber-bg); color: var(--amber); }
+  .pill.critical { background: var(--red-bg); color: var(--red); }
+  .pill.auth { background: var(--panel); color: var(--mid); font-family: var(--mono); font-weight: 400; }
+  .key-ok { color: var(--green); font-family: var(--mono); font-size: 12px; }
+  .key-warn { color: var(--amber); font-family: var(--mono); font-size: 12px; }
+  .key-bad { color: var(--red); font-family: var(--mono); font-size: 12px; }
+  .no-owner { color: var(--red); font-size: 12px; }
+  .owner-team { font-size: 13px; }
+  .owner-person { font-size: 12px; color: var(--dim); }
+  .docs-bar { width: 70px; height: 5px; background: var(--line); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 6px; }
+  .docs-bar i { display: block; height: 100%; border-radius: 3px; }
+  .docs-pct { font-family: var(--mono); font-size: 12px; color: var(--mid); }
+
+  /* detail drawer */
+  .drawer-wrap { position: sticky; bottom: 0; margin-top: 12px; display: none; }
+  .drawer { border: 1px solid var(--line); border-left: 4px solid var(--teal); padding: 16px 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px 24px; position: relative; }
+  .drawer.critical { border-left-color: var(--red); }
+  .drawer h3 { grid-column: 1 / -1; margin: 0; font-family: var(--mono); font-size: 15px; }
+  .drawer .close { position: absolute; top: 10px; right: 12px; border: none; background: none; font-size: 16px; color: var(--dim); cursor: pointer; }
+  .d-label { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--faint); font-weight: 600; margin-bottom: 2px; }
+  .d-val { font-size: 13px; }
+
+  /* overview */
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .kpi { padding: 16px; }
+  .kpi .k-label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); font-weight: 600; }
+  .kpi .k-num { font-family: var(--mono); font-size: 28px; font-weight: 600; margin: 4px 0 2px; }
+  .kpi .k-sub { font-size: 12px; color: var(--dim); }
+  .kpi.bad .k-num { color: var(--red); }
+  .kpi.warn .k-num { color: var(--amber); }
+  .ov-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; }
+  @media (max-width: 800px) { .ov-grid { grid-template-columns: 1fr; } }
+  .ov-panel { padding: 16px 20px; }
+  .ov-panel h3 { margin: 0 0 14px; font-size: 14px; }
+  .dept-row { margin-bottom: 12px; cursor: pointer; }
+  .dept-row:hover .dept-name { color: var(--teal); }
+  .dept-top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+  .dept-top b { font-family: var(--mono); font-weight: 600; }
+  .dept-sub { color: var(--dim); font-size: 11px; font-family: var(--mono); }
+  .bar { height: 7px; background: var(--line); border-radius: 4px; }
+  .bar i { display: block; height: 100%; border-radius: 4px; }
+  .alert { border: 1px solid var(--line); border-left: 4px solid var(--red); border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; cursor: pointer; }
+  .alert:hover { background: var(--panel); }
+  .alert.warning { border-left-color: var(--amber); }
+  .alert .a-sev { font-size: 10px; font-weight: 700; letter-spacing: .08em; }
+  .alert.critical .a-sev { color: var(--red); }
+  .alert.warning .a-sev { color: var(--amber); }
+  .alert p { margin: 4px 0 2px; font-size: 13px; }
+  .alert .a-meta { font-size: 11px; color: var(--dim); font-family: var(--mono); }
+
+  /* posture */
+  .posture-band { margin-bottom: 18px; }
+  .posture-band h3 { font-size: 13px; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .posture-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+  .p-card { padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; background: #fff; }
+  .p-card:hover { border-color: var(--teal); }
+  .p-card .top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .p-card .nm { font-family: var(--mono); font-size: 13px; font-weight: 600; }
+  .p-card .meta { font-size: 12px; color: var(--dim); }
+  .p-card .meta .no-owner { font-weight: 600; }
+  .p-card .foot { display: flex; justify-content: space-between; margin-top: 10px; font-size: 11px; color: var(--dim); }
+</style>
+</head>
+<body>
+<div class="site-bar">
+  <a href="/projects/">&larr; failforward.dev/projects</a>
+  <span>API Governance Dashboard · interactive prototype &middot; fake data &middot; part of the Shadow AI Governance toolchain</span>
+</div>
+
+<div class="app">
+  <div class="app-head">
+    <div class="app-title">API Governance <small id="sync">last synced: -</small></div>
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-view="registry">Registry</button>
+      <button class="tab" data-view="overview">Command Center</button>
+      <button class="tab" data-view="posture">Security Posture</button>
+    </div>
+  </div>
+
+  <section class="view active" id="view-registry">
+    <div class="card">
+      <div class="toolbar">
+        <div class="search">⌕ <input id="q" type="text" placeholder="Search APIs…" /></div>
+        <select id="f-dept"><option value="">Department</option></select>
+        <select id="f-status"><option value="">Status</option><option>Active</option><option>Deprecated</option><option>Critical</option></select>
+        <select id="f-auth"><option value="">Auth</option><option>OAuth 2.0</option><option>mTLS</option><option>API Key</option></select>
+        <span class="count" id="count"></span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>API</th><th>Owner</th><th>Status</th><th>Auth</th><th>Key expires</th><th>Docs</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="drawer-wrap card" id="drawer-wrap"><div class="drawer" id="drawer"></div></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-overview">
+    <div class="kpis">
+      <div class="card kpi"><div class="k-label">Total APIs</div><div class="k-num">4,231</div><div class="k-sub">+23 registered this week</div></div>
+      <div class="card kpi bad"><div class="k-label">Compliance issues</div><div class="k-num">1,340</div><div class="k-sub">31.7% of total portfolio</div></div>
+      <div class="card kpi warn"><div class="k-label">Keys expiring ≤30d</div><div class="k-num">178</div><div class="k-sub">34 already expired</div></div>
+      <div class="card kpi bad"><div class="k-label">APIs without owner</div><div class="k-num">847</div><div class="k-sub">+89 from recent M&A</div></div>
+    </div>
+    <div class="ov-grid">
+      <div class="card ov-panel">
+        <h3>Compliance by department <span style="font-weight:400;color:var(--dim);font-size:11px;">(click to open in registry)</span></h3>
+        <div id="depts"></div>
+      </div>
+      <div class="card ov-panel">
+        <h3>Active alerts, 5 unresolved</h3>
+        <div id="alerts"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-posture">
+    <div class="card ov-panel">
+      <div id="posture"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const APIS = [
+  { name:'payment-gateway-v3', desc:'Processes card + ACH transactions', team:'Payments', person:'Sarah K.', dept:'Engineering', status:'Active', auth:'OAuth 2.0', key:'Jun 2025', keyState:'ok', docs:94, posture:'compliant' },
+  { name:'auth-sso-v2', desc:'Single sign-on federation service', team:'Identity', person:'Dev T.', dept:'Ent. Security', status:'Active', auth:'mTLS', key:'12 days', keyState:'warn', docs:87, posture:'warning', note:'mTLS cert expires in 12 days. Rotation required.' },
+  { name:'customer-profile-api', desc:'CRM & account data access layer', team:'Sales', person:null, dept:'Sales', status:'Critical', auth:'OAuth 2.0', key:'Dec 2024', keyState:'bad', docs:61, posture:'critical', note:'Expired credentials and no owner in production.' },
+  { name:'order-mgmt-v1', desc:'Legacy order orchestration · Sunset Jul 1', team:'Commerce', person:'Ali M.', dept:'Engineering', status:'Deprecated', auth:'API Key', key:'Oct 2024', keyState:'bad', docs:38, posture:'warning', note:'Sunset scheduled Jul 1, 2025.' },
+  { name:'fraud-detection-v2', desc:'Real-time transaction risk scoring', team:'Risk', person:'Priya S.', dept:'Finance', status:'Active', auth:'mTLS', key:'Aug 2025', keyState:'ok', docs:72, posture:'warning', note:'Docs coverage below 75% threshold.' },
+  { name:'reporting-api-v2', desc:'Financial reporting & data export', team:'Finance', person:'Chris B.', dept:'Finance', status:'Active', auth:'OAuth 2.0', key:'Sep 2025', keyState:'ok', docs:89, posture:'compliant' },
+  { name:'notification-hub', desc:'Email/SMS dispatch · Sunset Aug 15', team:'Platform', person:null, dept:'IT Infrastructure', status:'Critical', auth:'API Key', key:'Nov 2024', keyState:'bad', docs:28, posture:'critical', note:'Expired key, no owner, sunset overdue.' },
+  { name:'audit-log-api', desc:'Immutable audit trail & compliance log', team:'GRC', person:'Marcus T.', dept:'GRC', status:'Active', auth:'mTLS', key:'Oct 2025', keyState:'ok', docs:96, posture:'compliant' },
+  { name:'legacy-erp-bridge', desc:'ERP integration bridge (acquired estate)', team:'IT Infrastructure', person:null, dept:'IT Infrastructure', status:'Critical', auth:'API Key', key:'May 2024', keyState:'bad', docs:12, posture:'critical', note:'Key expired May 2024, still active in production.' },
+  { name:'inventory-svc-v1', desc:'Warehouse inventory sync', team:'Operations', person:'Jake L.', dept:'IT Infrastructure', status:'Active', auth:'API Key', key:'Jan 2025', keyState:'warn', docs:72, posture:'warning', note:'Key expires Jan 2025.' },
+];
+const DEPTS = [
+  { name:'GRC', pct:94, count:153 }, { name:'Engineering', pct:89, count:1847 },
+  { name:'Enterprise Security', pct:76, count:600 }, { name:'Finance', pct:71, count:312 },
+  { name:'Sales', pct:58, count:428 }, { name:'IT Infrastructure', pct:52, count:891 },
+];
+const ALERTS = [
+  { sev:'critical', text:'34 API keys in Payments are expired and still active in production.', meta:'Jun 18 · Payments', api:'payment-gateway-v3' },
+  { sev:'critical', text:'247 IT Infrastructure APIs have no owner after Q2 reorg.', meta:'Jun 15 · IT Infrastructure', api:'legacy-erp-bridge' },
+  { sev:'warning', text:'auth-sso-v2 mTLS cert expires in 12 days. Rotation required.', meta:'Jun 14 · Identity', api:'auth-sso-v2' },
+  { sev:'warning', text:'order-mgmt-v1 sunset in 12 days, 3 consumers still calling it.', meta:'Jun 13 · Commerce', api:'order-mgmt-v1' },
+  { sev:'warning', text:'inventory-svc-v1 key expires Jan 2025 with no rotation scheduled.', meta:'Jun 11 · Operations', api:'inventory-svc-v1' },
+];
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// tabs
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => showView(t.dataset.view)));
+function showView(v) {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.view === v));
+  document.querySelectorAll('.view').forEach(x => x.classList.toggle('active', x.id === 'view-' + v));
+}
+
+// registry
+[...new Set(APIS.map(a => a.dept))].forEach(d => $('f-dept').insertAdjacentHTML('beforeend', `<option>${esc(d)}</option>`));
+['q','f-dept','f-status','f-auth'].forEach(id => $(id).addEventListener('input', renderRows));
+
+function statusPill(s) { return `<span class="pill ${s.toLowerCase()}">${s}</span>`; }
+function keyCell(a) { return `<span class="key-${a.keyState}">${a.keyState==='ok'?'✓':a.keyState==='warn'?'⚠':'✗'} ${esc(a.key)}</span>`; }
+function docsCell(a) {
+  const color = a.docs >= 75 ? 'var(--teal)' : a.docs >= 50 ? 'var(--amber)' : 'var(--red)';
+  return `<span class="docs-bar"><i style="width:${a.docs}%;background:${color}"></i></span><span class="docs-pct">${a.docs}%</span>`;
+}
+function renderRows() {
+  const q = $('q').value.toLowerCase(), d = $('f-dept').value, s = $('f-status').value, au = $('f-auth').value;
+  const rows = APIS.filter(a =>
+    (!q || (a.name + ' ' + a.desc + ' ' + a.team).toLowerCase().includes(q)) &&
+    (!d || a.dept === d) && (!s || a.status === s) && (!au || a.auth === au));
+  $('rows').innerHTML = rows.map(a => `
+    <tr data-api="${esc(a.name)}">
+      <td><div class="api-name">${esc(a.name)}</div><div class="api-desc">${esc(a.desc)}</div></td>
+      <td><div class="owner-team">${esc(a.team)}</div>${a.person ? `<div class="owner-person">${esc(a.person)}</div>` : `<div class="no-owner">No owner</div>`}</td>
+      <td>${statusPill(a.status)}</td>
+      <td><span class="pill auth">${esc(a.auth)}</span></td>
+      <td>${keyCell(a)}</td>
+      <td>${docsCell(a)}</td>
+    </tr>`).join('');
+  $('count').textContent = `${rows.length} of ${APIS.length} sample APIs · portfolio 4,231`;
+  document.querySelectorAll('#rows tr').forEach(tr => tr.addEventListener('click', () => openDrawer(tr.dataset.api)));
+}
+function openDrawer(name) {
+  const a = APIS.find(x => x.name === name); if (!a) return;
+  $('drawer').className = 'drawer' + (a.posture === 'critical' ? ' critical' : '');
+  $('drawer').innerHTML = `
+    <h3>${esc(a.name)}</h3>
+    <button class="close" onclick="document.getElementById('drawer-wrap').style.display='none'">✕</button>
+    <div><div class="d-label">Description</div><div class="d-val">${esc(a.desc)}</div></div>
+    <div><div class="d-label">Owner</div><div class="d-val">${esc(a.team)} · ${a.person ? esc(a.person) : '<span class="no-owner">No owner</span>'}</div></div>
+    <div><div class="d-label">Department</div><div class="d-val">${esc(a.dept)}</div></div>
+    <div><div class="d-label">Status / Auth</div><div class="d-val">${statusPill(a.status)} <span class="pill auth">${esc(a.auth)}</span></div></div>
+    <div><div class="d-label">Key expires</div><div class="d-val">${keyCell(a)}</div></div>
+    <div><div class="d-label">Docs coverage</div><div class="d-val">${docsCell(a)}</div></div>
+    ${a.note ? `<div style="grid-column:1/-1"><div class="d-label">Governance note</div><div class="d-val">${esc(a.note)}</div></div>` : ''}`;
+  $('drawer-wrap').style.display = 'block';
+  $('drawer-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// overview
+$('depts').innerHTML = DEPTS.map(d => {
+  const color = d.pct >= 85 ? 'var(--teal)' : d.pct >= 65 ? 'var(--amber)' : 'var(--red)';
+  return `<div class="dept-row" data-dept="${esc(d.name)}">
+    <div class="dept-top"><span class="dept-name">${esc(d.name)}</span><span><b style="color:${color}">${d.pct}%</b> <span class="dept-sub">${d.count.toLocaleString()} APIs</span></span></div>
+    <div class="bar"><i style="width:${d.pct}%;background:${color}"></i></div></div>`;
+}).join('');
+document.querySelectorAll('.dept-row').forEach(r => r.addEventListener('click', () => {
+  const map = { 'Enterprise Security': 'Ent. Security' };
+  const val = map[r.dataset.dept] ?? r.dataset.dept;
+  $('f-dept').value = [...$('f-dept').options].some(o => o.value === val) ? val : '';
+  renderRows(); showView('registry');
+}));
+$('alerts').innerHTML = ALERTS.map(al => `
+  <div class="alert ${al.sev}" data-api="${esc(al.api)}">
+    <div class="a-sev">${al.sev.toUpperCase()}</div><p>${esc(al.text)}</p><div class="a-meta">${esc(al.meta)}</div>
+  </div>`).join('');
+document.querySelectorAll('.alert').forEach(al => al.addEventListener('click', () => {
+  showView('registry'); openDrawer(al.dataset.api);
+}));
+
+// posture
+const bands = [
+  { key:'critical', label:'Critical risk', color:'var(--red)', sub:'expired credentials or no owner in production' },
+  { key:'warning', label:'Needs attention', color:'var(--amber)', sub:'expiring credentials or partial compliance' },
+  { key:'compliant', label:'Compliant', color:'var(--green)', sub:'valid credentials, documented, owned' },
+];
+$('posture').innerHTML = bands.map(b => {
+  const items = APIS.filter(a => a.posture === b.key);
+  return `<div class="posture-band">
+    <h3><span class="dot" style="background:${b.color}"></span>${b.label}, ${items.length} sample APIs <span style="font-weight:400;color:var(--dim)">· ${b.sub}</span></h3>
+    <div class="posture-cards">${items.map(a => `
+      <div class="p-card" data-api="${esc(a.name)}">
+        <div class="top">${statusPill(a.status)}<span class="pill auth">${esc(a.auth)}</span></div>
+        <div class="nm">${esc(a.name)}</div>
+        <div class="meta">${esc(a.team)} · ${a.person ? esc(a.person) : '<span class="no-owner">No owner</span>'}</div>
+        <div class="foot"><span>${keyCell(a)}</span><span>docs ${a.docs}%</span></div>
+      </div>`).join('')}</div></div>`;
+}).join('');
+document.querySelectorAll('.p-card').forEach(c => c.addEventListener('click', () => {
+  showView('registry'); openDrawer(c.dataset.api);
+}));
+
+$('sync').textContent = 'last synced: ' + new Date().toLocaleString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+renderRows();
+</script>
+</body>
+</html>

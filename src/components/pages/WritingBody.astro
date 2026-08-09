@@ -1,0 +1,64 @@
+---
+import data from '../../data/writing.json';
+const { intro, linkedin, series } = data;
+---
+
+<section class="hero compact">
+  <span class="section-tag">WRITING</span>
+  <h1>Writing</h1>
+  <p class="sub">{intro}</p>
+  <a class="btn" href={linkedin} target="_blank" rel="noopener">follow on linkedin →</a>
+</section>
+
+{series.map((s, idx) => (
+  <section class={idx === 0 ? 'showcase flat' : 'showcase'}>
+    <div class="meta-row" style="margin-bottom: 0.5rem;">
+      <span class="section-tag">SERIES {s.number}</span>
+      <span class={s.status === 'LIVE' ? 'badge lesson' : 'badge cat'}>{s.status}</span>
+    </div>
+    <h2>{s.title}</h2>
+    <p class="muted measure">{s.tagline}</p>
+
+    {s.featuredPost && (
+      <article class="article featured">
+        <div class="meta-row">
+          <span class="badge lesson">{s.featuredPost.badge}</span>
+          {s.featuredPost.date && <span>{s.featuredPost.date}</span>}
+        </div>
+        <h3 class="featured-title">{s.featuredPost.title}</h3>
+        <div class="content">
+          {s.featuredPost.paragraphs.map((p) => <p>{p}</p>)}
+        </div>
+        {s.status === 'LIVE' && (
+          <p><a href={linkedin} target="_blank" rel="noopener">read + react on LinkedIn →</a></p>
+        )}
+      </article>
+    )}
+
+    <h3 class="series-heading">The series</h3>
+    <div class="incident-grid grid-single">
+      {s.posts.map((po) =>
+        po.body && po.body.trim() ? (
+          <a class="incident-card" href={`/writing/${po.slug}/`}>
+            <div class="meta-row">
+              <span class="section-tag">{String(po.n).padStart(2, '0')}</span>
+              {po.live ? <span class="badge lesson">LIVE</span> : <span class="badge cat">PREVIEW</span>}
+              <span class="muted read-cue">read →</span>
+            </div>
+            <h3>{po.title}</h3>
+            <p class="summary">{po.hook}</p>
+          </a>
+        ) : (
+          <div class="incident-card card-static">
+            <div class="meta-row">
+              <span class="section-tag">{String(po.n).padStart(2, '0')}</span>
+              <span class="badge cat">{s.status === 'LIVE' ? 'UPCOMING' : 'DRAFT'}</span>
+            </div>
+            <h3>{po.title}</h3>
+            <p class="summary">{po.hook}</p>
+          </div>
+        )
+      )}
+    </div>
+  </section>
+))}

@@ -1,0 +1,12 @@
+---
+import { telemetry } from '../lib/telemetry';
+---
+
+<footer class="telemetry">
+  <div class="telemetry-inner">
+    <span><span class="k">build:</span> {telemetry.builtAt}</span>
+    <span><span class="k">commit:</span> {telemetry.sha}@{telemetry.branch}</span>
+    <span><span class="k">posture:</span> <span class="ok">static · no cookies · no trackers · no third-party js</span></span>
+    <span><span class="k">pipeline:</span> obsidian → publish:true filter → astro → edge</span>
+  </div>
+</footer>

@@ -1,0 +1,216 @@
+---
+const EMAIL = 'chad.longanecker@icloud.com';
+const LINKEDIN = 'https://www.linkedin.com/in/chadlonganecker';
+---
+
+<section class="hero compact">
+  <span class="section-tag">ENGAGE</span>
+  <h1>Hire / Consult</h1>
+  <p class="sub">
+    15+ years in security automation: 250+ environments, 23 countries, DLP,
+    incident response, M&A integration, Python pipelines, and the AI risk
+    governance work on this site. Two ways to work together.
+  </p>
+</section>
+
+<div class="incident-grid two-col">
+  <div class="incident-card card-static">
+    <span class="section-tag">FULL-TIME</span>
+    <h3>Security Automation / Detection / SecOps + AI</h3>
+    <p class="summary">
+      Primary target roles: Security Automation Engineer, Detection Engineer,
+      SecOps + AI hybrid. Remote (EU/EMEA, Poland-eligible) or hybrid Kraków.
+      American citizen · Polish permanent residence.
+    </p>
+    <div class="btn-row-sm">
+      <a class="btn" href={`mailto:${EMAIL}?subject=Full-time%20role%20-%20failforward.dev`}>email →</a>
+      <a class="btn secondary" href={LINKEDIN} target="_blank" rel="noopener">linkedin →</a>
+    </div>
+  </div>
+
+  <div class="incident-card card-static">
+    <span class="section-tag">CONSULT</span>
+    <h3>Fixed-scope engagements</h3>
+    <p class="summary">
+      Automation pipelines, DLP rollout, M&A security integration, AI
+      guardrails, shadow-AI governance programs. Scoped like a statement of
+      work: defined deliverable, defined boundary.
+    </p>
+    <div class="btn-row-sm">
+      <a class="btn" href="#consult-intake">start intake ↓</a>
+    </div>
+  </div>
+</div>
+
+<section id="consult-intake" class="showcase flat" style="margin-top: 1rem;">
+  <span class="section-tag">INTAKE</span>
+  <h2>Scoping questionnaire</h2>
+  <p class="muted measure">
+    Five minutes. This becomes the agenda for the first call. You get an answer
+    within two business days.
+  </p>
+
+  <form id="intake-form" class="intake" novalidate>
+    <div class="field-row">
+      <div class="field">
+        <label for="f-name">Name *</label>
+        <input id="f-name" name="name" type="text" required maxlength="120" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="f-email">Work email *</label>
+        <input id="f-email" name="email" type="email" required maxlength="200" autocomplete="email" />
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="f-company">Company</label>
+        <input id="f-company" name="company" type="text" maxlength="200" autocomplete="organization" />
+      </div>
+      <div class="field">
+        <label for="f-type">Engagement type *</label>
+        <select id="f-type" name="engagement_type" required>
+          <option value="">select...</option>
+          <option>Security automation / pipeline build</option>
+          <option>DLP rollout or tuning</option>
+          <option>M&A security integration</option>
+          <option>Shadow AI / AI governance program</option>
+          <option>AI guardrails for agents or LLM tooling</option>
+          <option>Incident response / post-mortem facilitation</option>
+          <option>Other (describe below)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="f-problem">What are you trying to fix? *</label>
+      <textarea id="f-problem" name="problem" required maxlength="2000" rows="4"
+        placeholder="Two or three sentences. What's broken, what triggered this, what does done look like?"></textarea>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="f-timeline">Timeline *</label>
+        <select id="f-timeline" name="timeline" required>
+          <option value="">select...</option>
+          <option>Urgent: this is an active problem</option>
+          <option>This quarter</option>
+          <option>Next quarter</option>
+          <option>Exploratory / no fixed date</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-data">Data sensitivity involved</label>
+        <select id="f-data" name="data_sensitivity">
+          <option value="">select...</option>
+          <option>Public / none</option>
+          <option>Internal</option>
+          <option>Confidential</option>
+          <option>Restricted / personal data (GDPR scope)</option>
+          <option>Not sure</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="f-budget">Budget range (EUR)</label>
+        <select id="f-budget" name="budget">
+          <option value="">prefer not to say</option>
+          <option>&lt; 5k</option>
+          <option>5k – 15k</option>
+          <option>15k – 50k</option>
+          <option>50k+</option>
+          <option>Undetermined</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-referral">How did you find me?</label>
+        <input id="f-referral" name="referral" type="text" maxlength="200" />
+      </div>
+    </div>
+
+    <div class="hp-wrap" aria-hidden="true">
+      <label for="f-website">Website</label>
+      <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <p class="privacy-note">
+      Sent over HTTPS directly to me. Not stored on this site, there is no
+      database here. No marketing list, no third-party analytics.
+    </p>
+
+    <div class="btn-row-sm" style="align-items: center;">
+      <button class="btn" type="submit" id="intake-submit">send intake →</button>
+      <span id="intake-status" class="intake-status" role="status"></span>
+    </div>
+  </form>
+</section>
+
+<script>
+  // Collection endpoint (e.g. Formspree: https://formspree.io/f/XXXXXXXX).
+  // Empty string = fallback mode: opens the visitor's mail client with a
+  // structured brief addressed to EMAIL. See MAINTENANCE.md §"Intake form".
+  const FORM_ENDPOINT = '';
+  const EMAIL = 'chad.longanecker@icloud.com';
+
+  const form = document.getElementById('intake-form') as HTMLFormElement | null;
+  const status = document.getElementById('intake-status');
+  const submitBtn = document.getElementById('intake-submit') as HTMLButtonElement | null;
+
+  function setStatus(msg: string, ok: boolean) {
+    if (!status) return;
+    status.textContent = msg;
+    status.className = 'intake-status ' + (ok ? 'ok' : 'err');
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+
+    if (data.website) { setStatus('Submission rejected.', false); return; }
+    delete data.website;
+
+    if (FORM_ENDPOINT) {
+      submitBtn && (submitBtn.disabled = true);
+      setStatus('Sending…', true);
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (res.ok) {
+          form.reset();
+          setStatus('Received. You’ll hear back within two business days.', true);
+        } else {
+          setStatus('Send failed. Email me instead: ' + EMAIL, false);
+        }
+      } catch {
+        setStatus('Network error. Email me instead: ' + EMAIL, false);
+      } finally {
+        submitBtn && (submitBtn.disabled = false);
+      }
+    } else {
+      const body = [
+        `Name: ${data.name}`,
+        `Email: ${data.email}`,
+        `Company: ${data.company || '-'}`,
+        `Engagement type: ${data.engagement_type}`,
+        `Timeline: ${data.timeline}`,
+        `Data sensitivity: ${data.data_sensitivity || '-'}`,
+        `Budget: ${data.budget || '-'}`,
+        `Referral: ${data.referral || '-'}`,
+        '',
+        'Problem:',
+        data.problem,
+      ].join('\n');
+      location.href =
+        `mailto:${EMAIL}?subject=${encodeURIComponent('Consulting intake · failforward.dev')}` +
+        `&body=${encodeURIComponent(body)}`;
+      setStatus('Opening your mail client…', true);
+    }
+  });
+</script>

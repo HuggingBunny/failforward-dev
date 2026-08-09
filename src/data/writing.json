@@ -1,0 +1,166 @@
+{
+  "intro": "Build-in-public, short form. Published on LinkedIn: contrarian takes on security, AI, and the people the old org chart got wrong.",
+  "linkedin": "https://www.linkedin.com/in/chadlonganecker",
+  "series": [
+    {
+      "number": "02",
+      "title": "The Wrong Hire",
+      "tagline": "ADHD, misfits, and security engineering in the agentic world.",
+      "status": "LIVE",
+      "featuredPost": {
+        "title": "The Wrong Hire",
+        "date": "2026-04-23",
+        "badge": "POST 1 · LIVE",
+        "paragraphs": [
+          "I was listening to a recent podcast on my walk and it made me think about how my early days of being \"difficult to manage\" turned into a competitive advantage in our ever-changing AI environment.",
+          "I heard how one company 2x'd engineering throughput in nine months. Their lead engineer calls the last three months \"the most fun of my career.\" Their CI system melted from the volume. They fixed it and kept going.",
+          "The people driving results are no longer the ones who thrive on predictability and long planning cycles. We're the ones who can't stop asking \"and then what?\" Who hyperfocus until the problem breaks, then jump to the next thing. Who find chaos energizing rather than paralyzing.",
+          "That's not a disorder. That's the job description in our current agentic world. Our imagination is the bottleneck now, not the tools, not the headcount, not the sprint capacity.",
+          "Moving fast doesn't mean ignoring security. It means breaking everything deliberately to push the boundaries of \"what does this button do?\" (in a controlled environment, on purpose) and carrying the lessons back to production and the security teams. The chaos people aren't reckless. They've already broken it twice in the lab before you've finished your threat model.",
+          "The environment that punished us for being everywhere at once is over. Backlog zero, frictionless flows, and secure data are the real goals, and those of us who'll hit them first were never comfortable sitting still anyway."
+        ]
+      },
+      "posts": [
+        {
+          "n": 1,
+          "title": "The Wrong Hire",
+          "hook": "\"Difficult to manage\" was the old label. In an agentic world it's the job description.",
+          "live": true,
+          "slug": "the-wrong-hire",
+          "body": "I was listening to a recent podcast on my walk and it made me think about how my early days of being \"difficult to manage\" turned into a competitive advantage in our ever-changing AI environment.\n\nI heard how one company 2x'd engineering throughput in nine months. Their lead engineer calls the last three months \"the most fun of my career.\" Their CI system melted from the volume. They fixed it and kept going.\n\nThe people driving results are no longer the ones who thrive on predictability and long planning cycles. We're the ones who can't stop asking \"and then what?\" Who hyperfocus until the problem breaks, then jump to the next thing. Who find chaos energizing rather than paralyzing.\n\nThat's not a disorder. That's the job description in our current agentic world. Our imagination is the bottleneck now, not the tools, not the headcount, not the sprint capacity.\n\nMoving fast doesn't mean ignoring security. It means breaking everything deliberately to push the boundaries of \"what does this button do?\" (in a controlled environment, on purpose) and carrying the lessons back to production and the security teams. The chaos people aren't reckless. They've already broken it twice in the lab before you've finished your threat model.\n\nThe environment that punished us for being everywhere at once is over. Backlog zero, frictionless flows, and secure data are the real goals, and those of us who'll hit them first were never comfortable sitting still anyway.",
+          "date": "2026-04-23"
+        },
+        {
+          "n": 2,
+          "title": "The Paranoid Mindset",
+          "hook": "Everyone's learning to think like a security engineer now. Some of us never had to.",
+          "live": false,
+          "slug": "the-paranoid-mindset",
+          "body": ""
+        },
+        {
+          "n": 3,
+          "title": "Hundreds of Environments",
+          "hook": "Hundreds of production environments, 20+ countries, constant M&A. No playbook worked twice.",
+          "live": false,
+          "slug": "hundreds-of-environments",
+          "body": ""
+        },
+        {
+          "n": 4,
+          "title": "Compliance is a History Book",
+          "hook": "Certifications document what already happened. Adversaries write in the present tense.",
+          "live": false,
+          "slug": "compliance-is-a-history-book",
+          "body": ""
+        },
+        {
+          "n": 5,
+          "title": "What Does This Button Do?",
+          "hook": "Break it deliberately, in the lab, on purpose, then carry the lesson to production.",
+          "live": false,
+          "slug": "what-does-this-button-do",
+          "body": ""
+        },
+        {
+          "n": 6,
+          "title": "The Adversaries Didn't Wait",
+          "hook": "While the org waited for the GRC process, the attackers shipped.",
+          "live": false,
+          "slug": "the-adversaries-didn-t-wait",
+          "body": ""
+        },
+        {
+          "n": 7,
+          "title": "The Generalist",
+          "hook": "Depth everywhere beats depth in one place when every codebase is a different country.",
+          "live": false,
+          "slug": "the-generalist",
+          "body": ""
+        },
+        {
+          "n": 8,
+          "title": "The 2am Brain",
+          "hook": "Hyperfocus at 2am with a silly grin, wondering what the next Enter key press brings.",
+          "live": false,
+          "slug": "the-2am-brain",
+          "body": ""
+        }
+      ]
+    },
+    {
+      "number": "01",
+      "title": "What Free Services Collect About You",
+      "tagline": "The trade you didn't know you made: Google, Meta, Apple, Spotify, Amazon.",
+      "status": "UPCOMING",
+      "featuredPost": {
+        "title": "Intro: the trade you didn't know you made",
+        "date": "",
+        "badge": "PREVIEW",
+        "paragraphs": [
+          "You aren't the customer. You're the product. You've heard that. But do you actually know what product you are?",
+          "Every \"free\" app you use runs servers, employs engineers, and pays for bandwidth. That isn't charity. It's a trade, and you're on the wrong end of it.",
+          "This is a seven-part series about what Google, Meta, Apple, Spotify, and Amazon actually collect about you. Not in theory. In practice. What they store, what they infer, and what they do with it."
+        ]
+      },
+      "posts": [
+        {
+          "n": 1,
+          "title": "Intro: the trade you didn't know you made",
+          "hook": "You aren't the customer. You're the product. But do you know what product you are?",
+          "live": false,
+          "slug": "intro-the-trade-you-didn-t-know-you-made",
+          "body": "You aren't the customer. You're the product. You've heard that. But do you actually know what product you are?\n\nEvery \"free\" app you use runs servers, employs engineers, and pays for bandwidth. That isn't charity. It's a trade, and you're on the wrong end of it.\n\nThis is a seven-part series about what Google, Meta, Apple, Spotify, and Amazon actually collect about you. Not in theory. In practice. What they store, what they infer, and what they do with it.\n\nThe numbers will bother you. Not because they're secret. Most of it is buried in terms of service you clicked through in 2014. It bothers you because when you see it laid out, you realize you handed it over voluntarily, in exchange for a maps app and a photo filter.\n\nWe'll take them one at a time. By the end, you'll either delete everything, or you'll make a deliberate choice to keep using them. Either way, at least it'll be a choice."
+        },
+        {
+          "n": 2,
+          "title": "Google: there's a lot of you in there",
+          "hook": "Search, location, voice, purchases. A decade of you, cross-referenced.",
+          "live": false,
+          "slug": "google-there-s-a-lot-of-you-in-there",
+          "body": ""
+        },
+        {
+          "n": 3,
+          "title": "Meta: they mapped your psychology",
+          "hook": "Not just what you clicked. What you hovered over and didn't.",
+          "live": false,
+          "slug": "meta-they-mapped-your-psychology",
+          "body": ""
+        },
+        {
+          "n": 4,
+          "title": "Apple: a low bar",
+          "hook": "Better than the others isn't the same as good.",
+          "live": false,
+          "slug": "apple-a-low-bar",
+          "body": ""
+        },
+        {
+          "n": 5,
+          "title": "Spotify: they mapped your inner life",
+          "hook": "Your mood, your routine, your 2am playlist. All signal.",
+          "live": false,
+          "slug": "spotify-they-mapped-your-inner-life",
+          "body": ""
+        },
+        {
+          "n": 6,
+          "title": "Amazon: a genuinely impressive business model",
+          "hook": "They monetize the intent to buy before you've decided to.",
+          "live": false,
+          "slug": "amazon-a-genuinely-impressive-business-model",
+          "body": ""
+        },
+        {
+          "n": 7,
+          "title": "Summary: make sure it's a decision",
+          "hook": "Delete everything, or keep it on purpose. Either way, choose.",
+          "live": false,
+          "slug": "summary-make-sure-it-s-a-decision",
+          "body": ""
+        }
+      ]
+    }
+  ]
+}

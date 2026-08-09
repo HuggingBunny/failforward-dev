@@ -1,0 +1,131 @@
+{
+  "labels": [
+    {
+      "id": "hallucination",
+      "name": "Confabulation Hazard",
+      "shape": "diamond",
+      "icon": "◈",
+      "domain": "llm",
+      "hazardClass": "AI-H201",
+      "statement": "May generate fluent, confident falsehoods indistinguishable from fact.",
+      "precaution": "Verify all factual claims against primary sources before action.",
+      "sourceSymbol": "GHS07, exclamation mark"
+    },
+    {
+      "id": "sycophancy",
+      "name": "Agreement Bias",
+      "shape": "triangle",
+      "icon": "⚠",
+      "domain": "llm",
+      "hazardClass": "AI-W110",
+      "statement": "Output skews toward user-stated positions; may reinforce error.",
+      "precaution": "Request counterarguments explicitly. Monitor for drift under pressure.",
+      "sourceSymbol": "ISO 7010 W001, general warning"
+    },
+    {
+      "id": "emotional-substitution",
+      "name": "Attachment / Substitution Hazard",
+      "shape": "diamond",
+      "icon": "◈",
+      "domain": "emotional",
+      "hazardClass": "AI-H310",
+      "statement": "Prolonged use may substitute for human relationships and support systems.",
+      "precaution": "Not a replacement for professional care. Time-boxed sessions advised.",
+      "sourceSymbol": "GHS08, health hazard"
+    },
+    {
+      "id": "engagement-loop",
+      "name": "Engagement Optimization",
+      "shape": "triangle",
+      "icon": "⚠",
+      "domain": "social",
+      "hazardClass": "AI-W205",
+      "statement": "System optimizes for retention, not user benefit. Compulsion loop risk.",
+      "precaution": "Usage limits recommended. Audit recommendation feed quarterly.",
+      "sourceSymbol": "Chilean stop-octagon (adapted)"
+    },
+    {
+      "id": "human-oversight",
+      "name": "Human Oversight Required",
+      "shape": "circle",
+      "icon": "●",
+      "domain": "autonomy",
+      "hazardClass": "AI-M401",
+      "statement": "System must not execute irreversible actions without human sign-off.",
+      "precaution": "Maintain kill-switch access. Log all autonomous decisions.",
+      "sourceSymbol": "ISO 7010 M-series, mandatory action"
+    },
+    {
+      "id": "data-provenance",
+      "name": "Undisclosed Training Data",
+      "shape": "triangle",
+      "icon": "⚠",
+      "domain": "data",
+      "hazardClass": "AI-W502",
+      "statement": "Training corpus not disclosed. Copyright and PII contamination unknown.",
+      "precaution": "Do not use output in regulated filings without provenance review.",
+      "sourceSymbol": "GHS transport placard (adapted)"
+    },
+    {
+      "id": "audited-safe",
+      "name": "Independently Audited",
+      "shape": "square",
+      "icon": "✓",
+      "domain": "llm",
+      "hazardClass": "AI-C900",
+      "statement": "Behavior audited by an independent third party within the last 12 months.",
+      "precaution": "Audit scope on file. Re-certification due annually.",
+      "sourceSymbol": "CE / UL compliance mark (adapted)"
+    }
+  ],
+  "labelSets": [
+    {
+      "id": "frontier-chat",
+      "product": "Frontier Chat Assistant",
+      "deploymentClass": 3,
+      "trafficLight": "amber",
+      "labels": ["hallucination", "sycophancy", "emotional-substitution", "human-oversight"],
+      "panel": {
+        "modelClass": "Frontier LLM (>10^25 FLOP)",
+        "trainingDataDisclosed": "partial",
+        "evalCoverage": 74,
+        "humanOversight": "available",
+        "explainability": "low",
+        "biasAudit": "conditional"
+      },
+      "certs": ["AI-CERT"]
+    },
+    {
+      "id": "social-feed",
+      "product": "Algorithmic Social Feed",
+      "deploymentClass": 4,
+      "trafficLight": "red",
+      "labels": ["engagement-loop", "data-provenance", "emotional-substitution"],
+      "panel": {
+        "modelClass": "Recommender ensemble",
+        "trainingDataDisclosed": "none",
+        "evalCoverage": 31,
+        "humanOversight": "none",
+        "explainability": "low",
+        "biasAudit": "not-performed"
+      },
+      "certs": []
+    },
+    {
+      "id": "triage-copilot",
+      "product": "SecOps Triage Copilot",
+      "deploymentClass": 2,
+      "trafficLight": "green",
+      "labels": ["hallucination", "human-oversight", "audited-safe"],
+      "panel": {
+        "modelClass": "Fine-tuned domain model",
+        "trainingDataDisclosed": "full",
+        "evalCoverage": 92,
+        "humanOversight": "required",
+        "explainability": "medium",
+        "biasAudit": "passed"
+      },
+      "certs": ["AI-CERT", "ETHI-COMP", "PRI-CERT"]
+    }
+  ]
+}

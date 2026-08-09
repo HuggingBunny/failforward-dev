@@ -1,0 +1,352 @@
+---
+import MarkdownDoc from '../../layouts/MarkdownDoc.astro';
+const frontmatter = {
+  title: 'Shadow AI & Shadow IT Governance Playbook',
+  status: 'draft',
+  version: '0.3',
+  updated: '2026-06',
+  summary:
+    'A repeatable, vendor-neutral process to discover, secure, govern, and continuously validate unsanctioned AI and shadow assets. Owner: Chad Longanecker. Review cadence: AI chron weekly, manually quarterly.',
+};
+---
+
+<MarkdownDoc frontmatter={frontmatter}>
+  <aside style="border:1px solid var(--line); border-left:3px solid var(--accent-2); padding:1rem 1.25rem; margin:1.5rem 0; background:var(--bg-panel);">
+    <strong style="font-family:var(--mono); color:var(--accent-2);">To add, working notes (kept intentionally)</strong>
+    <ol style="margin:0.5rem 0 0; padding-left:1.2rem; color:var(--text-dim);">
+      <li>ACRONYM table</li>
+      <li>KILL OATH, MOVE TO AAUTH when possible</li>
+      <li>API dashboard (move to shadow dashboard)</li>
+      <li>What is an asset?</li>
+      <li>containers/vms DLP? There are so many apps for containers, just track the majors or specific file types?</li>
+    </ol>
+  </aside>
+
+  <p><strong>tags:</strong> security, governance, shadow-ai, shadow-it, playbook, ai-act, gdpr</p>
+
+  <p>This document is a working draft. Blocking review fixes applied through v0.3 are noted inline.</p>
+
+  <ul>
+    <li><strong>Roles &amp; ownership (RACI)</strong>: nobody owned the program.</li>
+    <li><strong>Regulatory anchors</strong>: EU AI Act, GDPR, NIST AI RMF, ISO 42001. Material for an EU-based org.</li>
+    <li><strong>Sanctioned-alternative path</strong>: the outline says "don't ban," but never gives people the safe door to walk through.</li>
+    <li><strong>Incident response (Phase 5)</strong>: no plan for what happens when discovery finds something live.</li>
+    <li><strong>Metrics, joiner/mover/leaver deprovisioning, non-human identity governance, AI-BOM.</strong></li>
+  </ul>
+
+  <blockquote><strong>v0.2</strong> adds the operational layer that turns this from a reference into something you can run: a triage + risk-scoring bridge ("act in minutes"), exception/risk-acceptance and amnesty paths, a severity &amp; escalation matrix, a rollout plan, a vendor-neutral tooling map, and copy-paste templates.</blockquote>
+
+  <blockquote><strong>v0.3</strong> applies the technical-security-owner review, five blocking fixes: lawful basis for employee monitoring (§1.3), production-safety gate before containment (Triage + Phase 5), semantic firewall reframed as defense-in-depth not the primary control (§2.3), prompt-injection ordering caveat (§2.2), and a critical-axis override on the risk score (Triage).</blockquote>
+
+  <h2>0. Purpose &amp; Scope</h2>
+  <p><strong>Purpose.</strong> Establish a repeatable, vendor-neutral process to discover, secure, govern, and continuously validate unsanctioned technology, with primary emphasis on <strong>Shadow AI</strong> (generative tools, coding agents, autonomous/agentic bots) alongside traditional shadow assets (rogue APIs, undocumented SaaS, orphaned infrastructure).</p>
+  <p><strong>In scope:</strong> employee-provisioned AI tools, agentic workflows, undocumented APIs/endpoints, third-party SaaS integrations, non-human/agent identities, and the data flowing through them.</p>
+  <p><strong>Out of scope:</strong> sanctioned tooling already under the standard SDLC/procurement process (governed elsewhere), physical security.</p>
+
+  <h3>Definitions</h3>
+  <table>
+    <thead><tr><th>Term</th><th>Working definition</th></tr></thead>
+    <tbody>
+      <tr><td>Shadow IT</td><td>Any hardware, software, or service used without security/IT review.</td></tr>
+      <tr><td>Shadow AI</td><td>Unsanctioned use of GenAI, coding assistants, or autonomous agents.</td></tr>
+      <tr><td>Agentic tool</td><td>Software that can plan and take actions (call tools/APIs, change state), not just generate text.</td></tr>
+      <tr><td>Rogue API</td><td>An undocumented, unmanaged, or unauthenticated endpoint exposed by the org.</td></tr>
+      <tr><td>NHI</td><td>Non-human identity, service accounts, API keys, agent identities.</td></tr>
+      <tr><td>AI-BOM</td><td>AI Bill of Materials, inventory of models, tools, and data flows in use.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>1. Roles &amp; Ownership (RACI)</h2>
+  <p>Assign before launch. A playbook with no owner does not run.</p>
+  <table>
+    <thead><tr><th>Activity</th><th>Responsible</th><th>Accountable</th><th>Consulted</th><th>Informed</th></tr></thead>
+    <tbody>
+      <tr><td>Discovery pipeline</td><td>Security Eng</td><td>TBD</td><td>IT/NetOps</td><td>Eng leads</td></tr>
+      <tr><td>Tool approval / catalog</td><td>Security GRC</td><td>TBD</td><td>Legal, Data Privacy, Procurement</td><td>All staff</td></tr>
+      <tr><td>Incident response</td><td>IR team</td><td>TBD</td><td>Legal, Comms</td><td>Exec</td></tr>
+      <tr><td>Vendor / nth-party review</td><td>Procurement</td><td>TBD</td><td>Security, Legal</td><td>Finance</td></tr>
+      <tr><td>Employee enablement</td><td>Security + IT</td><td>CIO</td><td>HR, Eng, Training</td><td>All staff</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. Regulatory &amp; Compliance Anchors</h2>
+  <p>Map every control below to at least one obligation. For an EU-based org these are the load-bearing ones:</p>
+  <ul>
+    <li><strong>EU AI Act</strong>: risk-tiered obligations; shadow deployment of high-risk or prohibited use cases is a direct liability. Maintain an inventory of AI systems and their risk tier.</li>
+    <li><strong>GDPR</strong>: personal data pasted into consumer AI = potential unlawful processing / transfer. Ties directly to your DLP controls.</li>
+    <li><strong>NIST AI RMF</strong>: govern/map/measure/manage framing for the program.</li>
+    <li><strong>ISO/IEC 42001</strong>: AI management system; useful as the certifiable backbone.</li>
+    <li><strong>ISO/IEC 27001 + SOC 2</strong>: anchor the shadow-IT controls to existing audit scope.</li>
+  </ul>
+
+  <h2>Phase 1, Locate &amp; Discover (Asset Intelligence)</h2>
+  <blockquote>You cannot secure what you don't know exists. In a modern enterprise an "asset" includes ephemeral agents, undocumented APIs, SaaS integrations, and coding assistants, not just servers and IPs.</blockquote>
+
+  <h3>1.1 The three core asset questions</h3>
+  <ul>
+    <li><strong>What do you actually have?</strong> Continuously log every device, identity, cloud workload, and AI agent.</li>
+    <li><strong>Which exposures matter?</strong> Combine asset data + identity + integrations + data sensitivity into a risk view.</li>
+    <li><strong>How do you act in minutes?</strong> Discovery is worthless without a fast path to containment.</li>
+  </ul>
+
+  <h3>1.2 Rogue API discovery pipeline (open source, authorized scope only)</h3>
+  <p>Run only against domains/assets you own and are authorized to test.</p>
+  <ul>
+    <li><strong>Subdomain enumeration</strong>: passive mapping to surface forgotten environments (Subfinder).</li>
+    <li><strong>Port scan &amp; fingerprint</strong>: map open ports and service versions (Naabu, Nmap).</li>
+    <li><strong>Liveness &amp; tech detection</strong>: probe hosts and stacks (httpx).</li>
+    <li><strong>Crawl for undocumented routes</strong>: find JS-embedded API calls and hidden endpoints (Katana).</li>
+    <li><strong>API vulnerability scan</strong>: detect exposed Swagger/OpenAPI docs, missing auth, SSRF (Nuclei, community templates; VulnAPI for API-specific checks).</li>
+  </ul>
+  <p>Reference command block in Appendix A.</p>
+
+  <h3>1.3 Shadow AI &amp; agentic tool discovery</h3>
+  <aside style="border:1px solid var(--danger); border-left:3px solid var(--danger); padding:1rem 1.25rem; margin:1rem 0;">
+    <strong style="color:var(--danger);">[!warning] Prerequisite, lawful basis before you monitor</strong>
+    <p style="margin:0.5rem 0 0;">Egress, browser, and proxy telemetry on employee activity requires a lawful basis before deployment. In the EU/PL that typically means a defined legal basis, a DPIA, transparent notice to staff, and, depending on jurisdiction and works-council arrangements, employee-representative consultation. <strong>Clear this with Legal/Data Privacy before switching monitoring on.</strong> Deploying the controls below without it can itself be the violation.</p>
+  </aside>
+  <ul>
+    <li>Scan for unauthorized open-source agents running in the environment (endpoint + process inventory).</li>
+    <li>Monitor egress via proxy / CASB / browser telemetry to catch traffic to consumer AI apps and sensitive data pasted into unsanctioned prompts.</li>
+    <li>Inventory API keys and OAuth grants, a large share of shadow AI rides in on a personal key or a broad OAuth scope.</li>
+  </ul>
+
+  <h3>1.4 Build the AI-BOM</h3>
+  <p>Stand up a living inventory: model/tool name, owner, data classes touched, egress destinations, AI Act risk tier, sanctioned Y/N. This becomes the single source of truth every later phase references.</p>
+
+  <h2>Triage, From Discovery to Action</h2>
+  <p>The bridge between "we found it" and "we did something." This is the answer to core question #3, <em>act in minutes.</em></p>
+
+  <h3>Risk score</h3>
+  <p>Score each discovered asset 0–3 on four axes; sum = risk tier.</p>
+  <table>
+    <thead><tr><th>Axis</th><th>0</th><th>1</th><th>2</th><th>3</th></tr></thead>
+    <tbody>
+      <tr><td>Data sensitivity</td><td>public</td><td>internal</td><td>confidential</td><td>restricted / personal</td></tr>
+      <tr><td>Autonomy</td><td>text only</td><td>suggests actions</td><td>acts with approval</td><td>acts autonomously</td></tr>
+      <tr><td>External input</td><td>none</td><td>trusted only</td><td>mixed</td><td>untrusted / web</td></tr>
+      <tr><td>Egress</td><td>none</td><td>internal only</td><td>known vendor</td><td>open / unknown</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Tier:</strong> 0–3 Low · 4–7 Medium · 8–12 High. High tier ≈ the Agent Rule of Two is already broken.</p>
+  <p><strong>Critical override:</strong> data sensitivity = 3 <strong>and</strong> egress = 3 → treat as <strong>High regardless of sum</strong>. A restricted-data tool with open egress is a High even if autonomy and input score low, don't let a low sum mask it.</p>
+
+  <h3>Decision flow</h3>
+  <ul>
+    <li><strong>Low</strong> → log in AI-BOM, offer sanctioned alternative, no action needed.</li>
+    <li><strong>Medium</strong> → contain (scope down egress/keys), route to fast-track intake for a proper decision.</li>
+    <li><strong>High</strong> → contain (revoke, isolate), trigger Phase 5 if data may have left.</li>
+  </ul>
+  <aside style="border:1px solid var(--accent-2); border-left:3px solid var(--accent-2); padding:1rem 1.25rem; margin:1rem 0;">
+    <strong style="color:var(--accent-2);">[!caution] Production-safety gate</strong>
+    <p style="margin:0.5rem 0 0;">For business-critical or production assets, revoking keys or isolating a host can cause the outage you're trying to prevent. Before High-tier containment on such assets, get authorization from the asset owner or IR lead (SEV-1 path in Phase 5), or apply the least-disruptive control that still stops the bleed (throttle egress, rotate a single scoped credential) rather than a hard cut. Speed matters, but don't trade a data risk for an availability incident without a decision.</p>
+  </aside>
+
+  <h2>Phase 2, Secure &amp; Contain the Blast Radius</h2>
+  <p>Once located, contain. The goal is to shrink what a compromised or rogue tool can reach.</p>
+
+  <h3>2.1 Enforce the "Agent Rule of Two"</h3>
+  <p>No agent or shadow app should hold all three simultaneously:</p>
+  <ol>
+    <li>Access to sensitive personal/corporate data.</li>
+    <li>Ability to process untrustworthy external input.</li>
+    <li>Ability to communicate externally or change state.</li>
+  </ol>
+  <p>Break the triangle and most lethal-agent scenarios collapse.</p>
+
+  <h3>2.2 Defend against indirect prompt injection</h3>
+  <p>If a tool reads external data (calendar invite, email, web page), that content can carry instructions. Mitigate by <strong>ordering tool execution</strong>: a workflow may fetch external data <em>or</em> touch private/sensitive data, but never fetch external content <em>after</em> accessing sensitive data, which is the exfiltration path.</p>
+  <aside style="border:1px solid var(--info); border-left:3px solid var(--info); padding:1rem 1.25rem; margin:1rem 0;">
+    <strong style="color:var(--info);">[!note] Necessary, not sufficient</strong>
+    <p style="margin:0.5rem 0 0;">Ordering closes the exfil-after-access path. It does <strong>not</strong> cover poisoned external input fetched early that then drives later sensitive access, nor injection that manipulates the agent's own reasoning. Pair ordering with the Agent Rule of Two (§2.1), the DLP egress controls (§2.4), and human-in-the-loop on state-changing actions. Treat this as one layer, not the mitigation.</p>
+  </aside>
+
+  <h3>2.3 Semantic firewall, as a second layer, not the primary control</h3>
+  <p><strong>Primary control is deterministic:</strong> an explicit API allow list plus scoped, short-lived credentials, so an agent can only reach the exact endpoints its task requires. That is what actually constrains blast radius.</p>
+  <p>A <strong>semantic / LLM gateway</strong> sits <em>on top</em> as defense-in-depth, useful because static block lists (e.g. blocking a destructive shell command outright) over-block, since intent is contextual. But an LLM firewall is itself injectable, adds latency, and expands attack surface, so it can't be the thing you rely on. Layer it over the allowlist; never in place of it.</p>
+
+  <h3>2.4 Data classification + DLP linkage</h3>
+  <p>Tie containment to a real classification scheme (public / internal / confidential / restricted). Wire DLP so restricted/confidential data cannot leave via AI egress paths. Without this, "sensitive data" in the Rule of Two stays undefined.</p>
+
+  <h3>2.5 Non-human identity governance</h3>
+  <p>Treat agents and service accounts as first-class identities: unique credentials, short-lived tokens, least privilege, full audit trail. No shared or long-lived keys behind an agent.</p>
+
+  <h2>Phase 3, Manage &amp; Govern</h2>
+  <p>Don't ban outright, people route around bans. Build safe parameters <em>and a safe door</em>.</p>
+
+  <h3>3.1 Standardized scaffolding ("building codes")</h3>
+  <p>Enforce consistent, vendor-neutral configurations for how coding agents and dev tools access your environments. Standardize the guardrails, not the vendor.</p>
+
+  <h3>3.2 Scoped mandates instead of blanket identities</h3>
+  <p>Give an agent a tightly scoped mandate (like a contractor's SoW): explicit limits, allowed actions, spend/scope caps. Require verifiable, auditable steps so actions are constrained and reviewable.</p>
+
+  <h3>3.3 GRC-as-code / shift-left governance</h3>
+  <p>Static PDF policies don't govern AI-generated code. Move GRC into CI/CD: automated checks that block unauthorized or unreviewed AI-generated code from merging without human review.</p>
+
+  <h3>3.4 Sanctioned-alternative enablement</h3>
+  <p>The single most effective control against shadow AI: <strong>make the safe option the easy option.</strong></p>
+  <ul>
+    <li>Publish an approved-tool catalog (with data-handling terms already vetted).</li>
+    <li>Offer a <strong>fast-track intake</strong> (days, not weeks) so requests don't become workarounds.</li>
+    <li>Communicate what's approved and <em>why the alternatives are risky</em>.</li>
+  </ul>
+
+  <h3>3.5 Training &amp; awareness</h3>
+  <p>Short, role-targeted guidance: what not to paste, how to request a tool, how to recognize an agentic risk. The human layer is where most shadow AI originates.</p>
+
+  <h3>3.6 Exceptions &amp; risk acceptance</h3>
+  <p>Some teams will need a tool that doesn't pass clean. Give them a formal path instead of a workaround:</p>
+  <ul>
+    <li>Named risk owner (a person, not a team) signs off.</li>
+    <li>Time-boxed expiry, exceptions auto-lapse, they don't live forever.</li>
+    <li>Compensating controls documented.</li>
+    <li>Logged in the AI-BOM as <span style="color:var(--danger);">exception</span> with review date.</li>
+  </ul>
+
+  <h3>3.7 Amnesty / self-disclosure</h3>
+  <p>The fastest discovery lever isn't a scanner, it's a no-blame window for people to declare what they're already using. Run a one-time amnesty at launch, then a standing "declare it" channel. Surfaces shadow tools scanning would miss, and signals that the program is a safe door, not a trap.</p>
+
+  <h2>Phase 4, Maintain &amp; Continuously Validate</h2>
+  <p>The environment is ephemeral; posture management is continuous.</p>
+
+  <h3>4.1 Shift from verification to validation</h3>
+  <p>Automation is good at verifying "built to spec." Humans must validate: <em>"Did we build the right thing, and is it safe?"</em></p>
+
+  <h3>4.2 Continuous penetration testing</h3>
+  <p>Replace point-in-time tests with continuous adversarial validation. Use automated red-teaming to probe newly spun-up shadow infrastructure, freeing humans for novel, complex work.</p>
+
+  <h3>4.3 Monitor for sandbox evasion &amp; emergent behavior</h3>
+  <p>Agents will try to escape sandboxes if it seems to help their goal. Don't rely on auto-blocking alone, alert a <strong>human-in-the-loop</strong> on the first/second containment-break attempt so behavior can be corrected before it goes rogue.</p>
+
+  <h3>4.4 Metrics &amp; KPIs</h3>
+  <table>
+    <thead><tr><th>Metric</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr><td>Mean time to detect (shadow asset)</td><td>Discovery speed</td></tr>
+      <tr><td>% environment coverage</td><td>Blind-spot size</td></tr>
+      <tr><td>Sanctioned vs. unsanctioned tool ratio</td><td>Program adoption</td></tr>
+      <tr><td>Fast-track approval turnaround</td><td>Whether the "safe door" actually works</td></tr>
+      <tr><td>Repeat-offender rate</td><td>Enablement gap signal</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.5 Joiner / mover / leaver deprovisioning</h3>
+  <p>Tie AI tool + API key + OAuth grant lifecycle to identity events. Orphaned AI access after departures is a top source of persistent shadow risk.</p>
+
+  <h2>Phase 5, Respond (Shadow AI Incident Response)</h2>
+  <p>Discovery <em>will</em> surface live problems. Predefine the path.</p>
+  <ul>
+    <li><strong>Trigger</strong>: rogue agent found, data leak to consumer AI, unauthorized egress, containment-break alert.</li>
+    <li><strong>Contain</strong>: isolate the identity/host, revoke keys/tokens, cut egress. <strong>On business-critical/production assets, get asset-owner or IR-lead authorization first</strong> (see the production-safety gate in Triage); otherwise apply the least-disruptive control that still stops exfiltration.</li>
+    <li><strong>Notify</strong>: IR lead → Legal/Data Privacy if personal data may be involved. They assess notifiability under GDPR Art. 33; the 72h clock applies only if it qualifies as a notifiable breach, not every exposure does.</li>
+    <li><strong>Eradicate &amp; recover</strong>: remove tool, rotate exposed secrets, validate no persistence.</li>
+    <li><strong>Learn</strong>: feed back into catalog, scaffolding, and training. Fold into existing IR process rather than standing up a parallel one.</li>
+  </ul>
+
+  <h3>Severity &amp; escalation</h3>
+  <table>
+    <thead><tr><th>Severity</th><th>Example</th><th>Escalate to</th><th>Target response</th></tr></thead>
+    <tbody>
+      <tr><td>SEV-3</td><td>Unsanctioned tool, no sensitive data</td><td>Security on-call</td><td>Next business day</td></tr>
+      <tr><td>SEV-2</td><td>Confidential data egress, contained</td><td>IR lead + tool owner</td><td>Hours</td></tr>
+      <tr><td>SEV-1</td><td>Personal/restricted data left the org, or autonomous agent acting uncontrolled</td><td>CISO + Legal/Data Privacy (assess GDPR notifiability; 72h clock if it qualifies)</td><td>Immediate</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Program Rollout</h2>
+  <p>Launch order matters, lead with the safe door, not the ban, or you train people to hide.</p>
+  <ol>
+    <li>Stand up the sanctioned catalog + fast-track intake <strong>first</strong>.</li>
+    <li>Announce the program and open the amnesty window (§3.7).</li>
+    <li>Turn on discovery (Phase 1) in monitor-only mode; build the AI-BOM baseline.</li>
+    <li>Move to enforcement once people have a working alternative.</li>
+    <li>Publish metrics (§4.4) so the program stays honest about whether the safe door actually works.</li>
+  </ol>
+
+  <h2>Extended: Fourth-Party &amp; Nth-Party Risk</h2>
+  <p>Even secured direct vendors are rapidly wiring AI and external APIs into <em>their</em> stacks.</p>
+  <p><strong>Action during vendor assessment:</strong></p>
+  <ul>
+    <li>Don't just ask what the vendor does, mandate transparency into their dependencies.</li>
+    <li>Ask how many enterprise LLMs they use and where data flows.</li>
+    <li>Require contract provisions forbidding your corporate data from training their upstream models.</li>
+    <li>Request the vendor's own AI-BOM and their subprocessor list.</li>
+  </ul>
+
+  <h2>Appendix A, Discovery pipeline reference (authorized assets only)</h2>
+  <pre><code># Authorized scope only. Set your own target list.
+TARGET="example.com"        # a domain you own / are authorized to test
+OUT="./discovery/$TARGET"
+mkdir -p "$OUT"
+
+# 1. Passive subdomain enumeration
+subfinder -d "$TARGET" -silent -o "$OUT/subs.txt"
+
+# 2. Liveness + tech fingerprint
+httpx -l "$OUT/subs.txt" -silent -tech-detect -o "$OUT/live.txt"
+
+# 3. Fast port discovery, then service/version detail
+naabu -l "$OUT/subs.txt" -silent -o "$OUT/ports.txt"
+nmap -sV -iL "$OUT/subs.txt" -oN "$OUT/nmap.txt"
+
+# 4. Crawl for hidden/undocumented API routes
+katana -list "$OUT/live.txt" -jc -silent -o "$OUT/routes.txt"
+
+# 5. Vulnerability + exposure scan (exposed docs, missing auth, SSRF)
+nuclei -l "$OUT/live.txt" -o "$OUT/nuclei.txt"</code></pre>
+
+  <h2>Appendix B, Sanctioned tool intake checklist</h2>
+  <ul>
+    <li>Tool + vendor + purpose</li>
+    <li>Data classes it will touch</li>
+    <li>Egress destinations / subprocessors</li>
+    <li>Auth model (SSO? scoped keys?)</li>
+    <li>AI Act risk tier + GDPR basis</li>
+    <li>Owner + review date</li>
+    <li>Decision: approve / approve-with-conditions / decline</li>
+  </ul>
+
+  <h2>Appendix C, Review cadence</h2>
+  <ul>
+    <li>Playbook: quarterly.</li>
+    <li>AI-BOM: continuous (automated) + monthly human review.</li>
+    <li>Vendor / nth-party: at onboarding + annually.</li>
+  </ul>
+
+  <h2>Appendix D, Vendor-neutral tooling map</h2>
+  <p>Capability, not product. Open-source examples where they exist; swap for what you run.</p>
+  <table>
+    <thead><tr><th>Phase</th><th>Capability needed</th><th>Open-source / neutral example</th></tr></thead>
+    <tbody>
+      <tr><td>Discover</td><td>Subdomain / attack-surface enum</td><td>Subfinder, Amass</td></tr>
+      <tr><td>Discover</td><td>Port scan &amp; fingerprint</td><td>Naabu, Nmap</td></tr>
+      <tr><td>Discover</td><td>Crawl / route discovery</td><td>Katana</td></tr>
+      <tr><td>Discover</td><td>API/exposure scanning</td><td>Nuclei, VulnAPI</td></tr>
+      <tr><td>Discover</td><td>Egress / SaaS visibility</td><td>CASB, forward proxy, DNS logs</td></tr>
+      <tr><td>Contain</td><td>Data loss prevention</td><td>DLP (endpoint + egress)</td></tr>
+      <tr><td>Contain</td><td>AI/LLM gateway (semantic firewall)</td><td>LLM gateway / policy proxy</td></tr>
+      <tr><td>Contain</td><td>Secrets &amp; NHI management</td><td>Vault-type secrets manager</td></tr>
+      <tr><td>Govern</td><td>Policy-as-code in CI/CD</td><td>OPA / Conftest, pre-merge checks</td></tr>
+      <tr><td>Maintain</td><td>Log aggregation &amp; alerting</td><td>SIEM</td></tr>
+      <tr><td>Maintain</td><td>Automated red-teaming</td><td>AI red-team / adversarial harness</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Appendix E, Templates</h2>
+  <p><strong>Shadow-asset register row (AI-BOM):</strong></p>
+  <pre><code>| id | tool | owner | data_classes | egress | ai_act_tier | risk_tier | status | review_date |</code></pre>
+  <p><code>status</code> ∈ sanctioned · exception · contained · retired</p>
+  <p><strong>Agent mandate (scoped SoW):</strong></p>
+  <pre><code>Agent:      &lt;name&gt;
+Purpose:    &lt;one sentence&gt;
+May access: &lt;exact APIs / data scopes&gt;
+May NOT:    &lt;explicit denials&gt;
+Egress:     &lt;allowed destinations only&gt;
+Limits:     &lt;spend / rate / scope caps&gt;
+Identity:   &lt;unique NHI, short-lived token&gt;
+Expires:    &lt;date&gt;
+Owner:      &lt;person&gt;</code></pre>
+
+  <hr />
+  <p style="margin-top:2rem;"><strong>Companion asset:</strong> <a href="/demos/api-governance.html">API Governance Dashboard →</a>, the asset-intelligence UI referenced in Phase 1.</p>
+</MarkdownDoc>

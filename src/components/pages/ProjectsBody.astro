@@ -1,0 +1,23 @@
+---
+import data from '../../data/projects.json';
+const { intro, projects } = data;
+---
+
+<section class="hero compact">
+  <span class="section-tag">LAB</span>
+  <h1>Projects</h1>
+  <p class="sub">{intro}</p>
+</section>
+
+<div class="incident-grid grid-single">
+  {projects.map((pr) => (
+    <a class="incident-card" href={pr.href}>
+      <div class="meta-row">
+        <span class="badge lesson">{pr.status}</span>
+        <span class="muted">{pr.stack}</span>
+      </div>
+      <h3>{pr.title}</h3>
+      <p class="summary">{pr.summary}</p>
+    </a>
+  ))}
+</div>
