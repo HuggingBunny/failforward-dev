@@ -945,7 +945,9 @@ function initContactForm() {
 
       const data = await res.json().catch(() => ({}));
 
-      if (res.ok && (data.success === 'true' || data.success === true || data.message)) {
+      const isSuccess = res.ok && (data.success === true || data.success === 'true');
+
+      if (isSuccess) {
         statusEl.textContent = 'Inquiry transmitted securely. Expect a direct response shortly.';
         statusEl.className = 'intake-status ok';
         form.reset();
