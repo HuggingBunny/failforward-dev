@@ -916,13 +916,16 @@ function initContactForm() {
     }
 
     const payload = {
+      _subject: 'New failforward.dev Inquiry: ' + (form.elements['name'].value.trim() || 'Visitor'),
+      _captcha: 'false',
+      _template: 'table',
       name: form.elements['name'].value.trim(),
       email: form.elements['email'].value.trim(),
-      company: form.elements['company'].value.trim(),
+      company: form.elements['company'].value.trim() || 'Not specified',
       engagement_type: form.elements['engagement_type'].value,
-      message: form.elements['message'].value.trim(),
       timeline: form.elements['timeline'].value,
-      budget: form.elements['budget'].value
+      budget: form.elements['budget'].value,
+      message: form.elements['message'].value.trim()
     };
 
     submitBtn.disabled = true;
@@ -931,7 +934,7 @@ function initContactForm() {
     statusEl.className = 'intake-status';
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://formsubmit.co/ajax/chad@failforward.dev', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -942,12 +945,12 @@ function initContactForm() {
 
       const data = await res.json().catch(() => ({}));
 
-      if (res.ok && data.success !== false) {
+      if (res.ok && (data.success === 'true' || data.success === true || data.message)) {
         statusEl.textContent = 'Inquiry transmitted securely. Expect a direct response shortly.';
         statusEl.className = 'intake-status ok';
         form.reset();
       } else {
-        const errorMsg = data.error || 'Submission could not be processed. Please retry.';
+        const errorMsg = data.message || 'Submission could not be processed. Please retry.';
         statusEl.textContent = errorMsg;
         statusEl.className = 'intake-status err';
       }
