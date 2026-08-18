@@ -1,47 +1,23 @@
 # failforward.dev
 
-Developer portfolio: engineering post-mortems, automated systems, AI risk governance. Astro static site fed by an Obsidian vault.
+Chad Longanecker: Security Automation Engineer, DLP, Attack Surface Management, and AI Risk Governance.
 
-## Stack
+## Production Stack
+- **Architecture**: Zero-dependency static build (Semantic HTML5, Vanilla CSS3, Vanilla JS ES6).
+- **Backend / Intake**: Cloudflare Pages Function (`/functions/api/contact.js`) with honeypot bot mitigation and zero third-party trackers.
+- **Hosting & CI**: GitHub Pages automated deployment via GitHub Actions.
+- **DNS**: `failforward.dev` via Porkbun DNS.
 
-Astro 5 (static export) · zero frameworks client-side · gray-matter + zod ingestion · GitHub Pages (Actions) · Porkbun DNS.
-
-## Layout
-
-```
-├── astro.config.mjs
-├── content/incidents/        # publishable notes (Obsidian-compatible md)
-├── scripts/
-│   ├── sync-vault.mjs        # copy publish:true notes from a real vault
-│   └── test-guardrail.mjs    # CI test: publish filter fails closed
-└── src/
-    ├── components/
-    │   ├── LabelShowcase.astro    # AI Warning Labels interactive gallery
-    │   ├── HireCTA.astro          # contact modal
-    │   └── TelemetryFooter.astro  # build time, commit SHA, posture
-    ├── data/labels.ts        # label system dataset (GHS-derived)
-    ├── layouts/Base.astro
-    ├── lib/
-    │   ├── vault.ts          # Obsidian ingestion engine + publish guardrail
-    │   └── telemetry.ts
-    ├── pages/
-    │   ├── index.astro
-    │   └── incidents/        # gallery + [slug] detail pages
-    └── styles/global.css     # dark-mode-first theme
-```
-
-## Safety guardrail
-
-Only notes whose YAML frontmatter contains the **literal boolean** `publish: true` are built. Missing key, `"true"` string, malformed YAML, no frontmatter → excluded, logged, fail-closed. Regression-tested by `npm run test:guardrail`.
-
-## Commands
-
+## Local Preview & Development
 ```bash
-npm install
-npm run dev              # localhost:4321
-npm run build            # → dist/
-npm run test:guardrail   # verify publish filter
-VAULT_SOURCE="/path/to/vault" npm run sync   # pull publishable notes
+# Python local static server
+python3 -m http.server 8080
+
+# Cloudflare Pages local function emulation
+npx wrangler pages dev . --port 8788
 ```
 
-See `DEPLOY.md` for GitHub Pages + Porkbun DNS setup.
+## Documentation & Source of Truth
+Vault documentation and master metrics live in Obsidian:
+- Handoff & Architecture: `03 Career/failforward.dev/HANDOFF-summary.md`
+- Master Telemetry & Experience: `03 Career/Resumes & CV/Master/Master/master-cv.md`
