@@ -952,12 +952,12 @@ function initContactForm() {
         statusEl.className = 'intake-status ok';
         form.reset();
       } else {
-        const errorMsg = data.message || 'Submission could not be processed. Please retry.';
-        statusEl.textContent = errorMsg;
+        const errorMsg = data.message || 'Submission could not be processed automatically.';
+        statusEl.innerHTML = `${errorMsg} <a href="mailto:chad@failforward.dev?subject=${encodeURIComponent(payload._subject)}&body=${encodeURIComponent('Name: ' + payload.name + '\nEmail: ' + payload.email + '\nCompany: ' + payload.company + '\nEngagement: ' + payload.engagement_type + '\nTimeline: ' + payload.timeline + '\nBudget: ' + payload.budget + '\n\nMessage:\n' + payload.message)}" style="color: var(--ice); text-decoration: underline; margin-left: 0.5rem;">Send via email client</a>`;
         statusEl.className = 'intake-status err';
       }
     } catch (err) {
-      statusEl.textContent = 'Transmission error over network. Please verify connection and retry.';
+      statusEl.innerHTML = `Network transmission error. <a href="mailto:chad@failforward.dev?subject=${encodeURIComponent(payload._subject)}&body=${encodeURIComponent('Name: ' + payload.name + '\nEmail: ' + payload.email + '\nCompany: ' + payload.company + '\nEngagement: ' + payload.engagement_type + '\nTimeline: ' + payload.timeline + '\nBudget: ' + payload.budget + '\n\nMessage:\n' + payload.message)}" style="color: var(--ice); text-decoration: underline; margin-left: 0.5rem;">Click to send via email client</a>`;
       statusEl.className = 'intake-status err';
     } finally {
       submitBtn.disabled = false;
