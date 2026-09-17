@@ -562,80 +562,103 @@
         </p>
       </div>
 
-      <div class="projects-grid">
-        <!-- Superior by Nature -->
-        <article class="project-card">
-          <div>
-            <div class="project-card-header">
-              <div>
-                <span class="project-client-badge">Client Engagement · Commercial Dispatch</span>
-                <h3 class="project-title">Dynamic Geospatial Pricing &amp; Dispatch Engine</h3>
-                <div class="project-client-sub">Superior by Nature</div>
-              </div>
-              <span class="status-pill live">Production Live</span>
+      <div class="projects-grid" id="projects-grid">
+        <!-- Project 01: Superior by Nature -->
+        <div class="project-card">
+          <div class="meta-row">
+            <span class="badge live"><span class="status-pulse-dot"></span>LIVE</span>
+            <span class="badge cat">Client Dispatch</span>
+            <span class="read-cue">PRJ-2026-01</span>
+          </div>
+          <h3>Dynamic Geospatial Pricing &amp; Dispatch Engine</h3>
+          <p class="summary">
+            Automated transit dispatch and dynamic quote calculation pipeline engineered for Superior by Nature shuttle operations.
+          </p>
+          <div class="project-breakdown">
+            <div class="prj-field">
+              <span class="prj-tag">CLIENT CONTEXT:</span>
+              <span class="prj-desc">Superior by Nature &middot; Regional Shuttle &amp; Transit Operations</span>
             </div>
-            <p class="project-desc">
-              Automated transit dispatch and dynamic quote calculation pipeline engineered for Superior by Nature shuttle operations. Eliminated static N &times; N matrix overhead by engineering ad-hoc driving distance/duration lookups with CacheService caching layer to conserve API quotas, structured geocode resolution, and automated tiered fare formulas.
-            </p>
+            <div class="prj-field">
+              <span class="prj-tag">PROBLEM &amp; SCALE:</span>
+              <span class="prj-desc">Eliminated static N &times; N matrix overhead through ad-hoc driving distance/duration lookups, structured geocoding, and CacheService API quota caching.</span>
+            </div>
+            <div class="prj-field">
+              <span class="prj-tag">TECH STACK:</span>
+              <div class="project-tech-stack">
+                <span class="tech-pill">Google Apps Script</span>
+                <span class="tech-pill">Google Maps Platform</span>
+                <span class="tech-pill">CacheService</span>
+                <span class="tech-pill">JavaScript</span>
+              </div>
+            </div>
           </div>
-          <div class="project-tech-stack">
-            <span class="tech-pill">Google Apps Script</span>
-            <span class="tech-pill">Google Maps Platform</span>
-            <span class="tech-pill">CacheService</span>
-            <span class="tech-pill">JavaScript</span>
-          </div>
-        </article>
+        </div>
 
-        <!-- windows-patch-management -->
-        <article class="project-card">
-          <div>
-            <div class="project-card-header">
-              <div>
-                <span class="project-client-badge">Open Source Framework · Vulnerability Remediation</span>
-                <h3 class="project-title">windows-patch-management</h3>
-                <div class="project-client-sub">Public Engineering Hub</div>
-              </div>
-              <a href="https://github.com/HuggingBunny/windows-patch-management" target="_blank" rel="noopener" class="project-link-btn">
-                GitHub Repo ↗
-              </a>
+        <!-- Project 02: windows-patch-management -->
+        <div class="project-card">
+          <div class="meta-row">
+            <span class="badge oss">OPEN SOURCE</span>
+            <span class="badge cat">Patch Automation</span>
+            <a href="https://github.com/HuggingBunny/windows-patch-management" target="_blank" rel="noopener" class="read-cue read-cue-link">GITHUB &nearr;</a>
+          </div>
+          <h3>windows-patch-management</h3>
+          <p class="summary">
+            Enterprise Windows patch lifecycle architecture and remediation hub engineered for continuous vulnerability mitigation.
+          </p>
+          <div class="project-breakdown">
+            <div class="prj-field">
+              <span class="prj-tag">DEPLOYMENT SCOPE:</span>
+              <span class="prj-desc">Public Engineering Hub &middot; Enterprise Vulnerability Remediation</span>
             </div>
-            <p class="project-desc">
-              Enterprise Windows patch lifecycle architecture and remediation hub. Features CBS and WinSxS component store diagnostic playbooks, production PowerShell remediation scripts, third-party software packaging matrices, and CISO executive governance reporting templates.
-            </p>
+            <div class="prj-field">
+              <span class="prj-tag">ENGINEERING CORE:</span>
+              <span class="prj-desc">CBS/WinSxS component store diagnostic playbooks, WinRM automation dispatchers, packaging matrices, and CISO governance templates.</span>
+            </div>
+            <div class="prj-field">
+              <span class="prj-tag">TECH STACK:</span>
+              <div class="project-tech-stack">
+                <span class="tech-pill">PowerShell</span>
+                <span class="tech-pill">DISM</span>
+                <span class="tech-pill">WinRM</span>
+                <span class="tech-pill">UUP</span>
+                <span class="tech-pill">Python</span>
+              </div>
+            </div>
           </div>
-          <div class="project-tech-stack">
-            <span class="tech-pill">PowerShell</span>
-            <span class="tech-pill">DISM</span>
-            <span class="tech-pill">WinRM</span>
-            <span class="tech-pill">UUP</span>
-            <span class="tech-pill">Python</span>
-          </div>
-        </article>
+        </div>
 
-        <!-- Poland-NGO-Finanse -->
-        <article class="project-card">
-          <div>
-            <div class="project-card-header">
-              <div>
-                <span class="project-client-badge">Non-Profit Client · Financial Infrastructure</span>
-                <h3 class="project-title">Poland-NGO-Finanse</h3>
-                <div class="project-client-sub">Registered Polish NGO</div>
-              </div>
-              <a href="https://github.com/HuggingBunny/Poland-NGO-Finanse" target="_blank" rel="noopener" class="project-link-btn">
-                GitHub Repo ↗
-              </a>
+        <!-- Project 03: Poland-NGO-Finanse -->
+        <div class="project-card">
+          <div class="meta-row">
+            <span class="badge client">NON-PROFIT</span>
+            <span class="badge cat">Fiscal Infrastructure</span>
+            <a href="https://github.com/HuggingBunny/Poland-NGO-Finanse" target="_blank" rel="noopener" class="read-cue read-cue-link">GITHUB &nearr;</a>
+          </div>
+          <h3>Poland-NGO-Finanse</h3>
+          <p class="summary">
+            Comprehensive financial accounting and ledger application engineered for a registered Polish non-profit organization.
+          </p>
+          <div class="project-breakdown">
+            <div class="prj-field">
+              <span class="prj-tag">CLIENT CONTEXT:</span>
+              <span class="prj-desc">Registered Polish NGO &middot; Statutory Compliance &amp; Regulatory Reporting</span>
             </div>
-            <p class="project-desc">
-              Comprehensive financial accounting and ledger application engineered for a registered Polish non-profit organization. Automates statutory fiscal reporting, granular expense classification, and audit-ready bookkeeping reconciliation under Polish regulatory standards.
-            </p>
+            <div class="prj-field">
+              <span class="prj-tag">ENGINEERING CORE:</span>
+              <span class="prj-desc">Automates statutory fiscal reporting, granular expense classification, and audit-ready bookkeeping reconciliation under Polish standards.</span>
+            </div>
+            <div class="prj-field">
+              <span class="prj-tag">TECH STACK:</span>
+              <div class="project-tech-stack">
+                <span class="tech-pill">Python</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Financial Ledger</span>
+                <span class="tech-pill">Fiscal Reporting</span>
+              </div>
+            </div>
           </div>
-          <div class="project-tech-stack">
-            <span class="tech-pill">Python</span>
-            <span class="tech-pill">PostgreSQL</span>
-            <span class="tech-pill">Financial Ledger</span>
-            <span class="tech-pill">Fiscal Reporting</span>
-          </div>
-        </article>
+        </div>
       </div>
     </section>
 
